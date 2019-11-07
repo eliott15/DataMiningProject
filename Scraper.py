@@ -6,19 +6,39 @@ import time
 from bs4 import BeautifulSoup
 import pandas as pd
 
-TIMEOUT = 30
+TIMEOUT = 10
 SCORE_HOME = 0
 SCORE_AWAY = 2
 RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
-MATCH_COLUMNS = ["Match ID", ]
+MATCH_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HalfTime Score"]
 SCROLL_PAUSE_TIME = 0.5
 
 
 def scrape_match_stats(driver, match_id):
     driver.get("https://www.premierleague.com/match/" + match_id)
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
-    condition = EC.presence_of_element_located((By.CLASS_NAME, "CentralContent"))
+    condition = EC.presence_of_element_located((By.CLASS_NAME, "centralContent"))
     webdriver_wait.until(condition)
+
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    referee = soup.find(class_="referee").get_text().strip(" \n")
+    attendance = soup.find(class_="attendance hide-m").get_text().replace("Att: ", "")
+    kick_off = soup.find(class_="renderKOContainer").get_text()
+    half_time_score = soup.find(class_="halfTime").get_text().split()[3]
+    events = soup.find(class_="matchEvents matchEventsContainer")
+    home_events = events.find(class_="home")
+    away_events = events.find(class_="away")
+    home_goals = ""
+    home_red_cards = ""
+    away_goals = ""
+    away_red_cards = ""
+    for event in home_events.findall(class_="event"):
+        event_list = event.get_text.split()
+        if event_list[-1] == "Goal":
+            home_goals += " ".join(event_list) + "\n"
+        elif event_list[-1] == "Card":
+            home_red_cards += " ".join(event_list) + "\n"
+    print(referee, attendance, kick_off, half_time_score, home_goals, home_red_cards)
 
 
 def scrape_match_results(driver):
@@ -67,7 +87,8 @@ def main():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        scrape_match_results(driver)
+        #scrape_match_results(driver)
+        scrape_match_stats(driver, "46709")
 
 
 if __name__ == "__main__":
