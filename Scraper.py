@@ -11,7 +11,7 @@ SCORE_HOME = 0
 SCORE_AWAY = 2
 RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
 STATS_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HT Score", "Home Goals", "Home Red Cards",
-                 "Away Goals", "Away Red Cards", "Home Assists", "Away Assists"]
+                 "Away Goals", "Away Red Cards", "Home Assists", "Away Assists", "King of the Match"]
 SCROLL_PAUSE_TIME = 0.5
 
 
@@ -50,6 +50,8 @@ def scrape_match_stats(driver, match_id):
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "pl-modal"))
     webdriver_wait.until(condition)
+    condition = EC.presence_of_element_located((By.CLASS_NAME, "kotm-player__first-name"))
+    webdriver_wait.until(condition)
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
@@ -74,8 +76,12 @@ def scrape_match_stats(driver, match_id):
         home_assists = parse_assists(home_assists_list.find_all(class_="event"))
     if len(list(away_assists_list.children)) > 1:
         away_assists = parse_assists(away_assists_list.find_all(class_="event"))
+
+    king_of_the_match = soup.find(class_="kotm-player__first-name").get_text() + " " \
+                        + soup.find(class_="kotm-player__second-name").get_text()
+
     return [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards, away_goals,
-            away_red_cards, home_assists, away_assists]
+            away_red_cards, home_assists, away_assists, king_of_the_match]
 
 
 def scrape_all_match_stats(driver):
