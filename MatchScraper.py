@@ -178,7 +178,7 @@ def main():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        # scrape_match_results(driver)
+        scrape_match_results(driver)
         scrape_all_match_stats(driver)
 
 
