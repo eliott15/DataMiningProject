@@ -1,3 +1,289 @@
-Match ID,Referee,Attendance,Kick Off,HT Score,Home Goals,Home Red Cards,Away Goals,Away Red Cards,Home Assists,Away Assists,King of the Match
+Match ID,Referee,Attendance,Kick Off,HT Score,Home Goals,Home Red Cards,Away Goals,Away Red Cards,Home Assists,Away Assists,King of the Match,Home Possession %,Away Possession %,Home Shots on target,Away Shots on target,Home Shots,Away Shots,Home Touches,Away Touches,Home Passes,Away Passes,Home Tackles,Away Tackles,Home Clearances,Away Clearances,Home Corners,Away Corners,Home Offsides,Away Offsides,Home Yellow cards,Away Yellow cards,Home Red cards,Away Red cards,Home Fouls conceded,Away Fouls conceded
 46709,Paul Tierney,"25,480",16:00,0-0,,,"Çaglar Söyüncü 57'
-Jamie Vardy 88'",,,Demarai Gray 88',Jamie Vardy
+Jamie Vardy 88'",,,Demarai Gray 88',Jamie Vardy,44.2,55.8,3,5,12,14,548,634,334,431,19,22,12,24,5,6,2,1,2,2,0,0,15,16
+46710,Martin Atkinson,"39,001",18:30,0-0,Cenk Tosun 90 +7',,Dele Alli 63',Son Heung-Min 79',Lucas Digne 90 +7',Son Heung-Min 63',Lucas Digne,47.3,52.7,3,2,7,5,567,651,375,443,26,15,8,24,5,2,1,2,1,2,0,1,9,8
+46707,Chris Kavanagh,"10,669",14:30,1-0,Joshua King 45',,,,Adam Smith 45',,Joshua King,42.6,57.4,6,4,13,15,581,700,366,488,13,18,33,11,4,10,1,4,4,3,0,0,14,12
+46705,Michael Oliver,"60,383",17:00,1-0,Pierre-Emerick Aubameyang 21',,Raúl Jiménez 76',,Alexandre Lacazette 21',João Moutinho 76',Pierre-Emerick Aubameyang,57.5,42.5,4,8,10,24,766,613,539,398,16,22,20,21,8,9,2,2,0,2,0,0,6,15
+46706,Jonathan Moss,"41,878",17:00,1-0,Trézéguet 21',,"Andrew Robertson 87'
+Sadio Mané 90 +4'",,John McGinn 21',"Sadio Mané 87'
+Trent Alexander-Arnold 90 +4'",Sadio Mané,26.3,73.7,2,6,4,25,447,860,226,634,20,17,47,21,2,10,3,2,1,2,0,0,12,9
+46708,Kevin Friend,"30,539",17:00,0-0,"Leandro Trossard 68'
+Shane Duffy 84'",,,,"Martín Montoya 68'
+Leandro Trossard 84'",,Lewis Dunk,58.5,41.5,5,0,21,7,733,572,538,391,19,13,5,19,8,3,3,1,0,1,0,0,11,8
+46711,Lee Mason,"53,922",17:00,0-1,"Sergio Agüero 70'
+Kyle Walker 86'",,James Ward-Prowse 13',,Kyle Walker 70',,Kevin De Bruyne,75.3,24.7,4,3,26,3,885,461,639,225,9,20,5,76,17,0,3,0,3,1,0,0,11,10
+46712,Simon Hooper,"31,131",17:00,3-0,"John Lundstram 17', 43'
+John Fleck 44'",,,,"Lys Mousset 17', 43', 44'",,John Lundstram,45.6,54.4,6,0,13,6,563,627,384,460,17,5,23,17,7,6,1,0,1,2,0,0,8,12
+46714,Stuart Attwell,"59,907",17:00,0-2,"Fabián Balbuena 73'
+Robert Snodgrass 90'",,"Ciaran Clark 16'
+Federico Fernández 22'
+Jonjo Shelvey 51'",,Manuel Lanzini 90',"Joelinton 16'
+Jetro Willems 22'",Jetro Willems,69.5,30.5,6,9,16,12,787,453,585,262,12,18,12,40,7,3,1,4,2,1,0,0,10,7
+46713,Anthony Taylor,"21,011",19:30,0-1,Gerard Deulofeu 80' (pen),,"Tammy Abraham 5'
+Christian Pulisic 55'",,,"Jorginho 5'
+Tammy Abraham 55'",Tammy Abraham,32.8,67.2,3,10,12,16,555,991,373,794,16,16,20,17,1,6,4,2,0,0,8,5,,
+46700,Kevin Friend,"46,019",16:00,1-0,Jamaal Lascelles 37',Sean Longstaff 82',Jonny 73',,Federico Fernández 37',,Adama Traoré,43.1,56.9,2,5,13,13,595,720,405,533,13,18,28,17,3,6,1,1,2,2,1,0,8,16
+46695,Martin Atkinson,"60,345",18:30,2-1,"Sokratis 7'
+David Luiz 9'",,"Luka Milivojevic 32' (pen)
+Jordan Ayew 52'",,Granit Xhaka 7',James McArthur 52',Sokratis Papastathopoulos,56.2,43.8,6,4,15,10,639,554,444,345,21,14,18,26,12,5,1,1,2,0,0,0,18,9
+46698,Anthony Taylor,"53,222",18:30,0-1,"Jordan Henderson 52'
+Mohamed Salah 75' (pen)",,Harry Kane 1',,,,Mohamed Salah,68,32,13,4,21,11,836,523,631,298,20,16,8,35,8,3,0,4,3,3,0,0,9,11
+46701,Stuart Attwell,"27,108",18:30,0-2,Onel Hernández 88',,"Scott McTominay 21'
+Marcus Rashford 30'
+Anthony Martial 73'",,,"Daniel James 30'
+Marcus Rashford 73'",Marcus Rashford,46.1,53.9,3,11,10,21,619,692,417,480,26,24,16,13,1,10,1,0,2,2,0,0,13,10
+46699,Graham Scott,"54,506",14:30,0-0,"Raheem Sterling 46'
+David Silva 65'
+Ilkay Gündogan 70'",Fernandinho 87',,,Kevin De Bruyne 65',,Kevin De Bruyne,63.1,36.9,10,5,26,11,794,537,597,341,13,10,18,27,13,7,1,2,1,1,1,0,10,5
+46696,Andy Madley,"30,529",17:00,1-1,"Pascal Groß 15'
+Neal Maupay 80' (pen)
+Lucas Digne 90 +4' (og) Own",,"Adam Webster 20' (og) Own
+Dominic Calvert-Lewin 74'",,,Mason Holgate 74',Neal Maupay,55.5,44.5,4,6,8,10,720,613,533,425,18,17,8,14,0,5,3,2,2,1,0,0,12,12
+46703,Mike Dean,"20,821",17:00,0-0,,,,,,,Diego Rico,40.2,59.8,3,5,7,15,545,713,337,501,20,16,23,21,5,10,5,3,5,3,0,0,14,8
+46704,David Coote,"59,878",17:00,1-0,Robert Snodgrass 44',,Lys Mousset 69',,Andriy Yarmolenko 44',Enda Stevens 69',Lys Mousset,60.8,39.2,4,4,12,10,724,551,545,357,12,11,8,27,10,4,4,4,2,2,0,0,7,10
+46697,Michael Oliver,"20,975",19:30,0-2,"Jay Rodriguez 86'
+Dwight McNeil 89'",,"Christian Pulisic 21', 45', 56'
+Willian 58'",,"Robbie Brady 86', 89'","Willian 45'
+Mason Mount 56'
+Tammy Abraham 58'",Christian Pulisic,36.7,63.3,5,7,13,16,577,882,390,691,16,13,16,20,5,6,1,0,3,2,0,0,7,8
+46702,Andre Marriner,"28,762",22:00,0-5,,Ryan Bertrand 12',"Ben Chilwell 10'
+Youri Tielemans 17'
+Ayoze Pérez 19', 39', 57'
+Jamie Vardy 45', 58', 90 +4' (pen)
+James Maddison 85'",,,"Youri Tielemans 19'
+Ben Chilwell 39', 58'
+Harvey Barnes 57'",Jamie Vardy,27.4,72.6,3,15,6,25,483,925,272,709,20,26,18,8,2,7,1,0,1,0,3,12,,
+46692,Mike Dean,"30,775",22:00,1-0,Lys Mousset 30',,,,Jack O'Connell 30',,Lys Mousset,31.4,68.6,2,3,8,9,492,835,287,633,21,17,25,12,7,12,1,1,4,4,0,0,10,12
+46691,Martin Atkinson,"73,737",18:30,1-0,Marcus Rashford 36',,Adam Lallana 85',,Daniel James 36',Andrew Robertson 85',Marcus Rashford,32,68,2,4,7,10,509,842,299,652,10,18,29,17,3,1,4,1,0,1,0,0,6,14
+46689,Paul Tierney,"39,263",14:30,1-0,"Bernard 17'
+Gylfi Sigurdsson 90 +2'",,,,"Theo Walcott 17'
+Richarlison 90 +2'",,Bernard Anício Caldeira Duarte,51.3,48.7,10,4,19,8,596,592,390,384,24,13,9,26,11,2,9,4,2,2,0,0,15,15
+46686,Lee Mason,"10,669",17:00,0-0,,,,,,,Diego Rico,47.7,52.3,2,1,11,10,618,663,407,469,16,14,23,33,6,7,2,2,1,3,0,0,8,11
+46685,David Coote,"41,826",17:00,1-1,"Jack Grealish 45 +2'
+Matt Targett 90 +4'",,Adam Webster 21',Aaron Mooy 35',"Frederic Guilbert 45 +2'
+Jack Grealish 90 +4'",Pascal Groß 21',Jack Grealish,48.9,51.1,8,5,24,20,651,659,441,475,6,11,16,28,7,5,1,0,1,2,0,1,9,17
+46687,Andre Marriner,"40,513",17:00,0-0,Marcos Alonso 73',,,,Callum Hudson-Odoi 73',,Marcos Alonso,71.1,28.9,8,0,16,5,851,441,634,258,23,12,16,31,11,0,1,1,2,1,0,0,9,12
+46690,Jonathan Moss,"32,105",17:00,1-1,"Jamie Vardy 45'
+Youri Tielemans 74'",,Chris Wood 26',,"Harvey Barnes 45', 74'",Dwight McNeil 26',Jamie Vardy,64.5,35.5,3,4,19,13,770,504,556,303,22,15,20,22,9,4,2,3,0,3,0,0,4,10
+46693,Chris Kavanagh,"58,754",17:00,0-1,Dele Alli 86',,Abdoulaye Doucouré 6',,,Daryl Janmaat 6',Bamidele Alli,69.4,30.6,2,2,12,7,908,503,686,313,11,20,6,52,11,2,5,1,4,3,0,0,5,9
+46694,Peter Bankes,"30,915",17:00,0-0,Raúl Jiménez 61' (pen),,Danny Ings 53',,,,Raúl Jiménez,57,43,1,5,4,14,688,559,511,385,11,9,10,19,1,3,1,2,3,2,0,0,10,17
+46688,Anthony Taylor,"25,480",19:30,0-2,,,"Gabriel Jesus 39'
+David Silva 41'",,,"Bernardo Silva 39'
+Raheem Sterling 41'",David Silva,28.7,71.3,2,10,7,21,469,868,276,682,13,11,26,13,1,8,3,2,1,1,0,0,8,10
+46675,Martin Atkinson,"60,326",16:00,1-0,David Luiz 9',,,,Nicolas Pépé 9',,David Luiz Moreira Marinho,52.5,47.5,2,2,12,10,653,643,443,403,23,14,17,31,14,5,1,2,0,0,12,6,,
+46679,Craig Pawson,"54,435",16:00,0-0,,,"Adama Traoré 80', 90 +4'",,,"Raúl Jiménez 80', 90 +4'",Adama Traoré,76,24,2,2,18,7,917,423,714,230,14,18,5,43,9,1,1,2,5,2,0,0,11,14
+46682,Paul Tierney,"31,473",16:00,1-3,Danny Ings 30',,"Tammy Abraham 17'
+Mason Mount 24'
+N'Golo Kanté 40'
+Michy Batshuayi 89'",,,"Callum Hudson-Odoi 17'
+Willian 24'
+Marcos Alonso 40'
+Christian Pulisic 89'",Tammy Abraham,43.3,56.7,3,7,10,13,585,715,400,528,23,19,12,19,3,4,1,0,0,1,0,0,8,15
+46680,Mike Dean,"51,198",18:30,0-0,Matthew Longstaff 72',,,,Jetro Willems 72',,Matthew Longstaff,31.9,68.1,2,3,12,12,450,757,281,594,12,11,17,7,4,6,1,2,3,3,0,0,12,10
+46676,Jonathan Moss,"30,610",14:30,2-0,"Neal Maupay 3'
+Aaron Connolly 32', 65'",,,,Lewis Dunk 65',,Aaron Connolly,47.7,52.3,6,3,17,8,713,750,494,547,22,23,19,15,4,4,1,1,2,1,0,0,11,7
+46677,Graham Scott,"20,650",17:00,0-0,Jeff Hendrick 72',,,Séamus Coleman 56',Ashley Westwood 72',,Nick Pope,40.8,59.2,3,2,9,11,514,636,327,471,15,9,22,15,7,9,5,1,2,1,0,1,5,12
+46678,Chris Kavanagh,"53,322",17:00,1-0,"Sadio Mané 40'
+James Milner 90 +5' (pen)",,James Maddison 80',,James Milner 40',Ayoze Pérez 80',Sadio Mané,50.7,49.3,8,1,18,2,733,681,494,478,19,16,25,27,4,6,3,2,1,4,0,0,9,17
+46681,Andy Madley,"27,045",17:00,0-2,Josip Drmic 87',,"Wesley 14', 30'
+Jack Grealish 49'
+Conor Hourihane 61'
+Douglas Luiz 83'",,,"Anwar El Ghazi 14', 49'
+Conor Hourihane 30'
+Matt Targett 61'
+Wesley 83'",Wesley Moraes,57.6,42.4,5,12,21,22,698,570,472,345,20,16,20,34,10,6,0,1,1,3,0,0,14,17
+46683,Andre Marriner,"20,811",17:00,0-0,,,,,,,Dean Henderson,39.5,60.5,2,3,8,9,542,760,360,554,17,15,34,27,7,7,2,3,0,2,0,0,7,6
+46684,Michael Oliver,"59,912",19:30,0-0,Sébastien Haller 54',,"Patrick van Aanholt 63' (pen)
+Jordan Ayew 87'",,Ryan Fredericks 54',Martin Kelly 87',Patrick van Aanholt,51.7,48.3,4,4,9,7,678,668,519,489,19,10,14,18,2,2,2,4,3,2,0,0,11,7
+46671,Kevin Friend,"73,201",22:00,1-0,Scott McTominay 45',,Pierre-Emerick Aubameyang 58',,Marcus Rashford 45',Bukayo Saka 58',Pierre-Emerick Aubameyang,54.8,45.2,4,5,16,10,631,563,440,364,15,19,7,14,8,7,2,4,4,2,0,0,18,13
+46670,Craig Pawson,"32,168",18:30,1-0,"Ricardo Pereira 16'
+Jamie Vardy 54', 64'
+Paul Dummett 57' (og) Own
+Wilfred Ndidi 90'",,,Isaac Hayden 43',"Harvey Barnes 54'
+Marc Albrighton 64'
+Jonny Evans 90'",,Jamie Vardy,68.9,31.1,5,0,13,3,918,520,724,328,24,17,8,24,9,0,0,1,1,1,0,1,12,9
+46672,Anthony Taylor,"31,774",14:30,0-0,,,Georginio Wijnaldum 70',,,,Virgil van Dijk,29.6,70.4,2,4,12,16,479,896,291,708,11,11,29,25,6,5,0,1,1,1,0,0,8,4
+46666,Stuart Attwell,"10,729",17:00,1-1,"Joshua King 17'
+Callum Wilson 46'",,"Andriy Yarmolenko 10'
+Aaron Cresswell 74'",,"Nathan Aké 17'
+Joshua King 46'","Sébastien Haller 10'
+Felipe Anderson 74'",Joshua King,49.1,50.9,5,6,13,17,672,653,456,478,8,23,21,16,6,6,2,2,3,1,0,0,7,8
+46665,Lee Mason,"41,546",17:00,1-0,"Anwar El Ghazi 33'
+John McGinn 79'",,"Jay Rodriguez 68'
+Chris Wood 81'",,"Frederic Guilbert 33'
+Trézéguet 79'","Erik Pieters 68'
+Matthew Lowton 81'",John McGinn,60.2,39.8,3,3,16,10,610,438,416,281,14,13,13,16,7,3,2,0,1,4,0,0,10,16
+46667,Chris Kavanagh,"40,683",17:00,0-0,"Jorginho 50' (pen)
+Willian 76'",,,,Callum Hudson-Odoi 76',,Mason Mount,52.6,47.4,10,1,24,8,760,704,568,502,18,21,15,25,5,2,1,2,2,3,0,0,5,13
+46668,Jonathan Moss,"25,477",17:00,1-0,"Luka Milivojevic 21' (pen)
+Andros Townsend 90 +2'",,,,Wilfried Zaha 90 +2',,Luka Milivojevic,44.6,55.4,3,3,15,10,620,726,415,524,18,17,13,22,5,5,2,1,3,1,0,0,14,10
+46673,Graham Scott,"59,645",17:00,2-1,"Tanguy Ndombele 24'
+Harry Kane 43'",Serge Aurier 31',Danny Ings 39',,"Son Heung-Min 24'
+Christian Eriksen 43'",,Harry Kane,41.4,58.6,4,6,9,14,579,717,369,518,23,24,28,12,6,6,1,1,0,2,1,0,5,16
+46674,Paul Tierney,"30,711",17:00,1-0,"Matt Doherty 18'
+Daryl Janmaat 61' (og) Own",,,,Pedro Neto 18',,Matt Doherty,39.1,60.9,2,5,6,14,575,801,404,628,21,15,27,7,1,6,2,1,0,1,0,0,5,6
+46669,Michael Oliver,"39,222",19:30,1-1,Dominic Calvert-Lewin 33',,"Gabriel Jesus 24'
+Riyad Mahrez 71'
+Raheem Sterling 84'",,Séamus Coleman 33',Kevin De Bruyne 24',Kevin De Bruyne,37.2,62.8,8,8,12,19,540,813,358,619,19,15,8,19,5,2,2,5,2,2,0,0,4,8
+46658,Stuart Attwell,"25,122",16:00,0-0,Leander Dendoncker 46' (og) Own,,Diogo Jota 90 +5',Romain Saïss 73',,Adama Traoré 90 +5',Adama Traoré,49.9,50.1,4,4,13,13,692,661,456,442,24,31,18,17,6,7,1,0,2,1,0,1,7,10
+46664,Anthony Taylor,"59,936",16:00,1-0,"Andriy Yarmolenko 44'
+Aaron Cresswell 84'",,,,Felipe Anderson 44',,Andriy Yarmolenko,46.5,53.5,6,3,8,9,604,661,424,479,16,13,18,18,3,7,2,1,2,2,0,0,8,9
+46655,Jonathan Moss,"60,331",18:30,0-1,"Nicolas Pépé 59' (pen)
+Calum Chambers 81'
+Pierre-Emerick Aubameyang 84'",Ainsley Maitland-Niles 41',"John McGinn 20'
+Wesley 60'",,,"Anwar El Ghazi 20'
+Jack Grealish 60'",Pierre-Emerick Aubameyang,58.1,41.9,6,9,21,14,662,521,465,326,12,20,20,21,9,4,2,0,5,1,1,0,13,15
+46657,Michael Oliver,"40,638",18:30,0-2,N'Golo Kanté 71',,"Trent Alexander-Arnold 14'
+Roberto Firmino 30'",,César Azpilicueta 71',"Mohamed Salah 14'
+Andrew Robertson 30'",Trent Alexander-Arnold,55,45,2,3,13,6,713,608,492,415,15,11,10,37,6,4,7,1,3,3,0,0,8,13
+46660,Paul Tierney,"32,129",14:30,0-1,"Ricardo Pereira 69'
+James Maddison 85'",,Harry Kane 29',,Hamza Choudhury 85',Son Heung-Min 29',James Maddison,44.2,55.8,7,4,16,11,599,704,380,491,23,18,24,23,8,2,3,3,1,2,0,0,16,13
+46656,David Coote,"19,712",17:00,2-0,"Chris Wood 10', 14'",,,,"Ashley Westwood 10'
+Dwight McNeil 14'",,Chris Wood,41.4,58.6,6,2,13,11,550,714,357,528,14,19,15,19,7,3,2,0,0,1,0,0,11,10
+46659,Simon Hooper,"39,354",17:00,0-1,,,"Yerry Mina 40' (og) Own
+Lys Mousset 79'",,,John Lundstram 79',John Lundstram,69.8,30.2,3,1,16,2,741,442,520,227,10,15,11,63,12,3,1,1,1,3,0,0,9,9
+46661,Mike Dean,"54,273",17:00,5-0,"David Silva 1'
+Sergio Agüero 7' (pen)
+Riyad Mahrez 12'
+Bernardo Silva 15', 48', 60'
+Nicolás Otamendi 18'
+Kevin De Bruyne 85'",,,,"Kevin De Bruyne 1', 60'
+Sergio Agüero 18'
+Riyad Mahrez 85'",,Kevin De Bruyne,68.7,31.3,11,4,28,5,909,486,727,336,18,12,5,20,5,4,2,2,2,2,0,0,5,9
+46662,Martin Atkinson,"43,316",19:30,0-0,,,,,,,Mathew Ryan,28.7,71.3,4,3,11,16,467,922,280,718,18,14,22,14,5,3,0,3,2,1,0,0,12,8
+46663,Chris Kavanagh,"30,168",22:00,0-2,James Ward-Prowse 53' (pen),,"Nathan Aké 10'
+Harry Wilson 35'
+Callum Wilson 90 +5'",,,"Diego Rico 10'
+Philip Billing 35'
+Aaron Ramsdale 90 +5'",Nathan Aké,64.8,35.2,6,3,25,6,783,519,554,300,30,8,13,25,4,5,1,2,1,3,0,0,8,9
+46645,Mike Dean,"42,010",22:00,0-0,,,,Arthur Masuaku 67',,,Lukasz Fabianski,46.6,53.4,5,1,10,13,604,678,408,470,19,21,14,15,2,4,3,3,2,1,0,1,13,12
+46646,Paul Tierney,"10,416",16:00,1-1,"Callum Wilson 23', 72'
+Ryan Fraser 67'",,Dominic Calvert-Lewin 44',,"Joshua King 23'
+Diego Rico 72'",Richarlison 44',Callum Wilson,40.5,59.5,6,5,13,14,547,684,336,488,18,18,37,10,7,7,4,0,0,4,0,0,5,14
+46653,Anthony Taylor,"21,360",18:30,0-2,"Tom Cleverley 53'
+Roberto Pereyra 81' (pen)",,"Pierre-Emerick Aubameyang 21', 32'",,Gerard Deulofeu 53',"Sead Kolasinac 21'
+Ainsley Maitland-Niles 32'",Pierre-Emerick Aubameyang,52.4,47.6,10,4,31,7,679,625,499,466,17,13,15,16,7,1,1,0,3,3,0,0,14,4
+46648,Andre Marriner,"51,430",14:30,2-1,"Sadio Mané 28', 40'
+Mohamed Salah 72'",,Jetro Willems 7',,"Andrew Robertson 28'
+Roberto Firmino 72'",Christian Atsu 7',Sadio Mané,75.3,24.7,9,1,21,8,1023,470,847,282,13,20,8,33,10,1,2,8,0,0,5,4,,
+46647,Michael Oliver,"29,398",17:00,0-0,Neal Maupay 51',,Jeff Hendrick 90 +1',,Solly March 51',Matej Vydra 90 +1',Neal Maupay,62.5,37.5,5,1,14,7,693,500,491,284,21,17,20,24,3,6,2,2,0,2,0,0,13,7
+46649,Martin Atkinson,"73,689",17:00,1-0,Marcus Rashford 8' (pen),,,,,,Marcus Rashford,41.7,58.3,5,3,10,9,566,686,345,471,19,30,30,11,3,9,0,2,1,2,0,0,14,14
+46651,Lee Mason,"30,985",17:00,0-0,,Billy Sharp 85',Moussa Djenepo 66',,,Sofiane Boufal 66',Moussa Djenepo,48.2,51.8,4,7,17,11,647,692,414,467,21,18,24,28,12,6,3,1,1,1,1,0,10,7
+46652,Craig Pawson,"59,812",17:00,4-0,"Son Heung-Min 10', 23'
+Patrick van Aanholt 21' (og) Own
+Erik Lamela 42'",,,,"Toby Alderweireld 10'
+Serge Aurier 23'
+Harry Kane 42'",,Heung-Min Son,64.1,35.9,5,6,13,11,830,537,640,357,11,15,13,15,4,3,1,0,4,3,0,0,19,11
+46654,Graham Scott,"31,534",17:00,0-3,"Tammy Abraham 69' (og) Own
+Patrick Cutrone 85'",,"Fikayo Tomori 31'
+Tammy Abraham 34', 41', 55'
+Mason Mount 90 +6'",,,"Marcos Alonso 41'
+Jorginho 55'
+Michy Batshuayi 90 +6'",Tammy Abraham,45.3,54.7,4,6,11,15,648,781,449,555,17,20,12,28,7,5,1,1,1,2,0,0,8,11
+46650,Kevin Friend,"27,035",19:30,2-1,"Kenny McLean 18'
+Todd Cantwell 28'
+Teemu Pukki 50'",,"Sergio Agüero 45'
+Rodrigo 88'",,"Emiliano Buendía 18', 50'
+Teemu Pukki 28'","Bernardo Silva 45'
+Gabriel Jesus 88'",Teemu Pukki,31.4,68.6,3,8,7,25,524,876,318,671,16,15,50,7,3,16,1,0,3,1,0,0,8,7
+46639,Anthony Taylor,"39,374",16:00,2-1,"Richarlison 5', 80'
+Alex Iwobi 12'",,"Romain Saïss 9'
+Raúl Jiménez 75'",Willy Boly 90 +5',"Moise Kean 5'
+Gylfi Sigurdsson 12'
+Lucas Digne 80'",Willy Boly 75',Richarlison de Andrade,58.7,41.3,6,5,15,8,687,522,451,320,24,19,37,22,7,7,1,2,1,4,0,1,12,12
+46635,Martin Atkinson,"60,333",18:30,1-2,"Alexandre Lacazette 45 +1'
+Pierre-Emerick Aubameyang 71'",,"Christian Eriksen 10'
+Harry Kane 40' (pen)",,"Nicolas Pépé 45 +1'
+Matteo Guendouzi 71'",,Pierre-Emerick Aubameyang,54.8,45.2,8,9,26,13,673,569,453,388,23,13,11,24,11,6,3,1,3,5,0,0,13,19
+46643,Mike Dean,"30,499",14:30,0-1,Jannik Vestergaard 58',Kevin Danso 73',Daniel James 10',,Kevin Danso 58',Scott McTominay 10',Daniel James,41.4,58.6,2,8,10,21,598,771,375,537,25,19,25,16,2,3,0,1,1,2,1,0,17,7
+46637,Stuart Attwell,"40,560",17:00,2-0,"Tammy Abraham 19', 43'",,"Callum Robinson 46'
+Kurt Zouma 89' (og) Own",,,Enda Stevens 46',Tammy Abraham,62.3,37.7,5,2,13,8,898,595,719,429,16,15,15,24,3,4,2,0,0,1,0,0,6,11
+46638,Kevin Friend,"25,248",17:00,0-0,Jordan Ayew 73',,,Trézéguet 54',,,Jordan Ayew,52.8,47.2,5,2,22,10,614,591,407,379,18,19,21,30,13,2,2,0,2,4,0,1,15,16
+46640,Peter Bankes,"31,613",17:00,2-1,"Jamie Vardy 12', 73'
+Youri Tielemans 41'",,Callum Wilson 15',,"Ben Chilwell 12'
+Jamie Vardy 41'
+Youri Tielemans 73'",Ryan Fraser 15',Jamie Vardy,55,45,6,2,15,8,751,647,541,432,22,14,25,18,4,5,2,1,1,3,0,0,9,11
+46641,Jonathan Moss,"54,386",17:00,2-0,"Kevin De Bruyne 2'
+Sergio Agüero 42', 55'
+Bernardo Silva 79'",,,,"David Silva 2', 55'
+Kevin De Bruyne 42'
+Sergio Agüero 79'",,Sergio Agüero,53.5,46.5,6,2,15,6,755,678,598,523,15,18,19,14,8,1,1,3,1,1,0,0,10,6
+46642,Graham Scott,"44,157",17:00,1-1,Fabian Schär 41',,Will Hughes 2',,Isaac Hayden 41',,Fabian Schär,48.8,51.2,5,3,13,13,651,682,468,498,11,14,14,24,6,5,6,0,2,3,0,0,5,11
+46644,Paul Tierney,"59,950",17:00,1-0,"Sébastien Haller 24'
+Andriy Yarmolenko 56'",,,,Arthur Masuaku 24',,Sébastien Haller,48.6,51.4,8,3,18,8,662,710,474,500,29,14,9,15,8,2,2,3,2,1,0,0,16,10
+46636,Chris Kavanagh,"21,762",19:30,0-2,,,"Chris Wood 33' (og) Own
+Sadio Mané 37'
+Roberto Firmino 80'",,,"Roberto Firmino 37'
+Mohamed Salah 80'",Roberto Firmino,36.2,63.8,2,7,7,15,495,739,318,568,14,11,21,19,6,4,5,1,0,0,10,16,,
+46626,Andre Marriner,"10,486",16:00,1-2,Harry Wilson 45 +3',,"Sergio Agüero 15', 64'
+Raheem Sterling 43'",,,"Kevin De Bruyne 15'
+David Silva 43', 64'",Sergio Agüero,26.2,73.8,7,5,10,18,419,905,249,728,8,16,22,16,4,5,2,4,1,3,0,0,7,13
+46632,Mike Dean,"59,245",18:30,0-1,,,Joelinton 27',,,Christian Atsu 27',Joelinton Cássio Apolinário de Lira,80.2,19.8,2,3,17,8,942,391,763,190,10,15,5,54,6,6,1,4,2,2,0,0,10,5
+46634,Craig Pawson,"30,522",18:30,0-1,Raúl Jiménez 90 +7' (pen),,Ashley Barnes 13',,,Dwight McNeil 13',Ashley Barnes,65.1,34.9,2,4,17,13,772,479,586,306,9,12,29,27,4,3,1,1,0,2,0,0,9,11
+46630,Martin Atkinson,"27,032",14:30,2-2,"Todd Cantwell 6'
+Teemu Pukki 30'",,"Tammy Abraham 3', 68'
+Mason Mount 17'",,"Teemu Pukki 6'
+Emiliano Buendía 30'","César Azpilicueta 3'
+Christian Pulisic 17'
+Mateo Kovacic 68'",Tammy Abraham,46.6,53.4,5,8,6,23,682,766,481,543,16,26,29,9,1,8,1,1,0,0,9,9,,
+46627,Kevin Friend,"30,019",17:00,0-0,,Florin Andone 30',"Moussa Djenepo 55'
+Nathan Redmond 90 +1'",,,"Danny Ings 55'
+Sofiane Boufal 90 +1'",Nathan Redmond,50.7,49.3,3,4,12,12,596,580,394,395,16,19,10,22,8,5,1,0,1,3,1,0,9,10
+46629,Paul Tierney,"73,454",17:00,0-1,Daniel James 89',,"Jordan Ayew 32'
+Patrick van Aanholt 90 +3'",,Anthony Martial 89',Jeffrey Schlupp 32',Jordan Ayew,71.3,28.7,3,3,22,5,748,409,562,231,9,25,6,26,8,1,2,4,0,0,8,18,,
+46631,Andy Madley,"30,079",17:00,0-1,Oliver McBurnie 62',,"Jamie Vardy 38'
+Harvey Barnes 70'",,George Baldock 62',"James Maddison 38'
+Çaglar Söyüncü 70'",Jamie Vardy,49.1,50.9,2,2,7,10,616,668,421,452,16,13,15,38,7,4,1,5,1,0,0,0,11,6
+46633,Chris Kavanagh,"20,035",17:00,1-1,Andre Gray 17',,"Mark Noble 3' (pen)
+Sébastien Haller 64', 73'",,Will Hughes 17',Felipe Anderson 64',Sébastien Haller,54.9,45.1,3,10,23,16,667,593,465,386,17,17,12,24,8,7,1,2,1,1,0,0,12,11
+46628,Anthony Taylor,"53,298",19:30,1-0,"Joel Matip 41'
+Mohamed Salah 49' (pen), 58'",,Lucas Torreira 85',,"Trent Alexander-Arnold 41'
+Fabinho 58'",,Mohamed Salah,52,48,5,3,25,9,747,738,553,516,25,16,11,27,6,4,1,4,1,1,0,0,8,5
+46625,Michael Oliver,"41,922",22:00,1-0,"Wesley 21'
+Anwar El Ghazi 90 +5'",,,,"Jota 21'
+John McGinn 90 +5'",,Wesley Moraes,35.2,64.8,3,1,7,12,503,727,301,539,12,16,25,7,0,6,8,1,2,3,0,0,10,18
+46624,Jonathan Moss,"31,314",22:00,0-1,Rúben Neves 55',,Anthony Martial 27',,João Moutinho 55',Marcus Rashford 27',Rúben Diogo da Silva Neves,34.4,65.6,2,2,6,9,520,845,350,668,17,23,14,15,4,6,1,1,2,2,0,0,17,8
+46622,David Coote,"30,197",16:00,0-0,John Lundstram 47',,,,,,John Lundstram,42.5,57.5,3,4,15,6,604,718,354,498,20,21,38,25,8,4,0,1,3,1,0,0,16,11
+46618,Graham Scott,"40,629",18:30,1-0,Mason Mount 7',,Wilfred Ndidi 67',,,James Maddison 67',Mason Mount,50.2,49.8,5,3,14,12,692,690,454,455,25,29,23,20,4,5,3,3,1,0,0,0,9,14
+46615,Mike Dean,"60,214",14:30,1-1,"Alexandre Lacazette 13'
+Pierre-Emerick Aubameyang 64'",,Ashley Barnes 43',,"Dani Ceballos 13', 64'",,Daniel Ceballos Fernández,67.5,32.5,9,5,15,18,731,437,529,234,12,16,28,25,10,7,5,1,2,1,0,0,13,11
+46616,Martin Atkinson,"40,996",17:00,0-2,Douglas Luiz 71',,"Joshua King 2' (pen)
+Harry Wilson 12'",,Jack Grealish 71',,Joshua King,62.6,37.4,7,4,21,12,689,468,490,295,7,15,15,25,10,5,5,2,0,2,0,0,10,13
+46617,Anthony Taylor,"30,459",17:00,0-0,Leandro Trossard 65',,Chicharito 61',,,Manuel Lanzini 61',Leandro Trossard,57.3,42.7,4,3,16,8,717,587,497,377,20,22,16,14,8,6,2,4,0,2,0,0,11,10
+46619,Lee Mason,"39,066",17:00,1-0,Bernard 10',,,,Lucas Digne 10',,Lucas Digne,44.1,55.9,2,2,12,8,536,611,303,388,20,34,35,13,4,7,3,1,2,3,0,0,11,11
+46621,Stuart Attwell,"27,059",17:00,1-0,"Teemu Pukki 32', 63', 75'",,Jonjo Shelvey 90 +3',,"Todd Cantwell 63', 75'",Sean Longstaff 90 +3',Teemu Pukki,63.3,36.7,8,4,15,12,780,513,603,336,14,14,23,13,7,5,2,1,1,3,0,0,9,11
+46623,Andre Marriner,"31,712",17:00,0-1,Danny Ings 83',,"Sadio Mané 45 +1'
+Roberto Firmino 71'",,,"James Milner 45 +1'
+Sadio Mané 71'",Sadio Mané,36.2,63.8,3,6,14,15,497,735,296,530,15,7,27,30,5,9,4,1,2,1,0,0,10,6
+46620,Michael Oliver,"54,503",19:30,2-1,"Raheem Sterling 20'
+Sergio Agüero 35'",,"Erik Lamela 23'
+Lucas Moura 56'",,"Kevin De Bruyne 20', 35'","Tanguy Ndombele 23'
+Erik Lamela 56'",Kevin De Bruyne,55.4,44.6,10,2,30,3,806,701,610,506,15,17,10,23,13,2,3,1,1,0,0,0,14,4
+46609,Andre Marriner,"32,015",16:00,0-0,,,,,,,Willy Boly,70,30,1,2,16,8,871,508,665,291,20,19,12,33,12,3,0,1,0,2,0,0,3,13
+46614,Martin Atkinson,"47,635",16:00,0-0,,,Pierre-Emerick Aubameyang 58',,,Ainsley Maitland-Niles 58',Pierre-Emerick Aubameyang,38.1,61.9,2,2,9,8,577,819,378,616,26,11,17,22,5,3,1,3,1,3,0,0,12,7
+46613,Anthony Taylor,"73,620",18:30,1-0,"Marcus Rashford 18' (pen), 67'
+Anthony Martial 65'
+Daniel James 81'",,,,"Andreas Pereira 65'
+Paul Pogba 67', 81'",,Marcus Rashford,46.2,53.8,5,7,11,18,649,730,449,523,16,21,19,11,3,5,2,0,3,4,0,0,15,13
+46612,Mike Dean,"59,870",14:30,0-1,,,"Gabriel Jesus 25'
+Raheem Sterling 51', 75', 90 +1'
+Sergio Agüero 86' (pen)",,,"Kyle Walker 25'
+Kevin De Bruyne 51'
+Riyad Mahrez 75', 90 +1'",Raheem Sterling,42.9,57.1,3,9,5,14,571,722,403,547,18,18,9,13,1,1,2,4,2,2,0,0,6,13
+46606,Kevin Friend,"10,714",17:00,0-0,Chris Mepham 62',,Billy Sharp 88',,,,Billy Sharp,52.9,47.1,3,3,13,8,671,615,485,428,18,14,13,16,3,4,1,1,2,1,0,0,10,19
+46607,Graham Scott,"19,784",17:00,0-0,"Ashley Barnes 63', 70'
+Johann Gudmundsson 75'",,,,"Erik Pieters 63', 70'",,Ashley Barnes,46.5,53.5,4,3,10,11,549,579,332,393,21,7,13,18,2,7,5,1,0,0,6,12,,
+46608,Jonathan Moss,"25,151",17:00,0-0,,,,Morgan Schneiderlin 76',,,Lucas Digne,35.4,64.6,2,3,6,10,467,722,268,500,21,14,21,18,6,2,4,0,2,1,0,1,16,14
+46611,Craig Pawson,"20,245",17:00,0-1,,,"Abdoulaye Doucouré 28' (og) Own
+Florin Andone 65'
+Neal Maupay 77'",,,"Davy Pröpper 65'
+Lewis Dunk 77'",Lewis Dunk,48.2,51.8,3,3,11,5,602,637,414,442,12,24,10,24,5,2,0,3,0,1,0,0,15,11
+46610,Chris Kavanagh,"60,407",19:30,0-1,"Tanguy Ndombele 73'
+Harry Kane 86', 90'",,John McGinn 9',,"Lucas Moura 73'
+Moussa Sissoko 90'",Tyrone Mings 9',Harry Kane,70.1,29.9,7,4,31,7,792,461,587,256,17,29,6,39,14,0,1,0,1,0,0,0,13,9
+46605,Michael Oliver,"53,333",22:00,4-0,"Grant Hanley 7' (og) Own
+Mohamed Salah 19'
+Virgil van Dijk 28'
+Divock Origi 42'",,Teemu Pukki 64',,"Roberto Firmino 19'
+Mohamed Salah 28'
+Trent Alexander-Arnold 42'",Emiliano Buendía 64',Mohamed Salah,57.9,42.1,7,5,15,12,662,577,477,363,21,12,5,35,11,2,0,5,0,2,0,0,9,9

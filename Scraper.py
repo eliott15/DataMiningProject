@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from bs4 import BeautifulSoup
 import pandas as pd
+import csv
 
 TIMEOUT = 10
 SCORE_HOME = 0
@@ -29,6 +30,10 @@ def parse_events(events):
             if red_cards != "":
                 red_cards += "\n"
             red_cards += " ".join(event_list[:-2])
+        elif event_list[-1] == "Card)":
+            if red_cards != "":
+                red_cards += "\n"
+            red_cards += " ".join(event_list[:-5])
     return goals, red_cards
 
 
@@ -45,7 +50,7 @@ def parse_assists(events):
 
 def scrape_match_stats(driver, match_id):
     """Scrape the stats for a specific match"""
-    print(f"Scraping match stat for match_id: {match_id}")
+    print(f"Scraping match stats for match_id: {match_id}")
     driver.get("https://www.premierleague.com/match/" + match_id)
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "pl-modal"))
@@ -54,7 +59,6 @@ def scrape_match_stats(driver, match_id):
     webdriver_wait.until(condition)
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
-
 
     referee = soup.find(class_="referee").get_text().strip(" \n")
     attendance = soup.find(class_="attendance hide-m").get_text().replace("Att: ", "")
@@ -84,26 +88,46 @@ def scrape_match_stats(driver, match_id):
     stat_tab_driver = driver.find_element(By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2']")
     stat_tab_driver.click()
 
-    condition = EC.presence_of_element_located((By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2'][class='active']"))
+    condition = EC.presence_of_element_located((By.CSS_SELECTOR, "tbody[class='matchCentreStatsContainer'] > tr"))
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     webdriver_wait.until(condition)
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
-
     stats_container = soup.find(class_="matchCentreStatsContainer")
-    print(list(stats_container.children))
-    stat_line = stats_container.find_all("tr")
-    print(list(stat_line)[0].get_text())
-
-    return [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards, away_goals,
-            away_red_cards, home_assists, away_assists, king_of_the_match]
+    stat_lines = stats_container.find_all("tr")
+    stats_list = []
+    stats_columns_list = []
+    has_red_cards = False
+    for stat_line in stat_lines:
+        stat_columns = list(stat_line.find_all("td"))
+        if stat_columns[1].get_text() == "Red cards":
+            has_red_cards = True
+        if not has_red_cards and stat_columns[1].get_text() == "Fouls conceded":
+            stats_columns_list.append("Home Red cards")
+            stats_columns_list.append("Away Red cards")
+            stats_list.append("0")
+            stats_list.append("0")
+        stats_columns_list.append("Home " + stat_columns[1].get_text())
+        stats_columns_list.append("Away " + stat_columns[1].get_text())
+        stats_list.append(stat_columns[0].get_text())
+        stats_list.append(stat_columns[2].get_text())
+    # print(stats_dict)
+    return stats_columns_list, [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards,
+                                away_goals,
+                                away_red_cards, home_assists, away_assists, king_of_the_match] + stats_list
 
 
 def scrape_all_match_stats(driver):
     """Scrapes all the stats for the matches in match_results.csv"""
     stats = []
-    stats.append(scrape_match_stats(driver, "46709"))  # temporary, we'll implement going over the results file later
-    df = pd.DataFrame(stats, columns=STATS_COLUMNS)
+    with open('match_results.csv', 'r') as results_file:
+        match_results = csv.DictReader(results_file)
+        for match_result in match_results:
+            columns_to_add, match_stats = scrape_match_stats(driver, match_result['Match ID'])
+            stats.append(match_stats)
+
+    stats_columns_whole = STATS_COLUMNS + columns_to_add
+    df = pd.DataFrame(stats, columns=stats_columns_whole)
     df.to_csv('match_stats.csv', index=False)
 
 
