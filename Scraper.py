@@ -55,6 +55,7 @@ def scrape_match_stats(driver, match_id):
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
+
     referee = soup.find(class_="referee").get_text().strip(" \n")
     attendance = soup.find(class_="attendance hide-m").get_text().replace("Att: ", "")
     kick_off = soup.find(class_="renderKOContainer").get_text()
@@ -79,6 +80,20 @@ def scrape_match_stats(driver, match_id):
 
     king_of_the_match = soup.find(class_="kotm-player__first-name").get_text() + " " \
                         + soup.find(class_="kotm-player__second-name").get_text()
+
+    stat_tab_driver = driver.find_element(By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2']")
+    stat_tab_driver.click()
+
+    condition = EC.presence_of_element_located((By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2'][class='active']"))
+    webdriver_wait = WebDriverWait(driver, TIMEOUT)
+    webdriver_wait.until(condition)
+
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+
+    stats_container = soup.find(class_="matchCentreStatsContainer")
+    print(list(stats_container.children))
+    stat_line = stats_container.find_all("tr")
+    print(list(stat_line)[0].get_text())
 
     return [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards, away_goals,
             away_red_cards, home_assists, away_assists, king_of_the_match]
