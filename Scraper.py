@@ -10,11 +10,26 @@ TIMEOUT = 10
 SCORE_HOME = 0
 SCORE_AWAY = 2
 RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
-MATCH_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HalfTime Score"]
+MATCH_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HalfTime Score", "Home Goals", "Home Red Cards",
+                 "Away Goals", "Away Red Cards"]
 SCROLL_PAUSE_TIME = 0.5
 
 
+def parse_events(events):
+    """Parse an event to Goal or Red Card"""
+    goals = ""
+    red_cards = ""
+    for index, event in enumerate(events):
+        event_list = event.get_text().split()
+        if event_list[-1] == "Goal":
+            goals += " ".join(event_list[:-1]) + ("" if index == len(events) - 1 else "\n")
+        elif event_list[-1] == "Card":
+            red_cards += " ".join(event_list[:-2]) + "\n"
+    return goals, red_cards
+
+
 def scrape_match_stats(driver, match_id):
+    """Scrape the stats for a specific match"""
     driver.get("https://www.premierleague.com/match/" + match_id)
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "centralContent"))
@@ -28,20 +43,17 @@ def scrape_match_stats(driver, match_id):
     events = soup.find(class_="matchEvents matchEventsContainer")
     home_events = events.find(class_="home")
     away_events = events.find(class_="away")
-    home_goals = ""
-    home_red_cards = ""
-    away_goals = ""
-    away_red_cards = ""
-    for event in home_events.findall(class_="event"):
-        event_list = event.get_text.split()
-        if event_list[-1] == "Goal":
-            home_goals += " ".join(event_list) + "\n"
-        elif event_list[-1] == "Card":
-            home_red_cards += " ".join(event_list) + "\n"
-    print(referee, attendance, kick_off, half_time_score, home_goals, home_red_cards)
+    home_goals, home_red_cards, away_goals, away_red_cards = "", "", "", ""
+    if len(list(home_events.children)) > 1:  # Checks if events have children other than '\n'
+        home_goals, home_red_cards = parse_events(home_events.find_all(class_="event"))
+    if len(list(away_events.children)) > 1:
+        away_goals, away_red_cards = parse_events(away_events.find_all(class_="event"))
+    return [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards, away_goals,
+            away_red_cards]
 
 
 def scrape_match_results(driver):
+    """Scrape all match results from current Premier League season"""
     results = []
     driver.get('https://www.premierleague.com/results')
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
@@ -70,7 +82,6 @@ def scrape_match_results(driver):
             score = match.find(class_="score")
             scores = list(score.children)
             match_id = match["data-comp-match-item"]
-            # scrape_match_stats(driver, match_id)
             results.append([match_id,
                             match_date,
                             match["data-home"],
@@ -87,8 +98,8 @@ def main():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        #scrape_match_results(driver)
-        scrape_match_stats(driver, "46709")
+        # scrape_match_results(driver)
+        print(scrape_match_stats(driver, "46701"))
 
 
 if __name__ == "__main__":
