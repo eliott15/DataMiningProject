@@ -1,19 +1,23 @@
+import re
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 import time
 from bs4 import BeautifulSoup
 import pandas as pd
 import csv
+from argparse import ArgumentParser
+import sys
 
 TIMEOUT = 10
 SCORE_HOME = 0
 SCORE_AWAY = 2
 RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
-STATS_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HT Score", "Home Goals", "Home Red Cards",
-                 "Away Goals", "Away Red Cards", "Home Assists", "Away Assists", "King of the Match"]
-SCROLL_PAUSE_TIME = 0.5
+STATS_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HT Score", "Home Goals", "Home RC events",
+                 "Away Goals", "Away RC events", "Home Assists", "Away Assists", "King of the Match"]
+PAUSE_TIME = 2
 
 
 def parse_events(events):
@@ -85,8 +89,8 @@ def scrape_match_stats(driver, match_id):
     king_of_the_match = soup.find(class_="kotm-player__first-name").get_text() + " " \
                         + soup.find(class_="kotm-player__second-name").get_text()
 
-    stat_tab_driver = driver.find_element(By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2']")
-    stat_tab_driver.click()
+    stat_tab = driver.find_element(By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2']")
+    stat_tab.click()
 
     condition = EC.presence_of_element_located((By.CSS_SELECTOR, "tbody[class='matchCentreStatsContainer'] > tr"))
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
@@ -131,14 +135,84 @@ def scrape_all_match_stats(driver):
     df.to_csv('match_stats.csv', index=False)
 
 
-def scrape_match_results(driver):
-    """Scrape all match results from current Premier League season"""
-    print("Scraping match results")
+def get_current_filters(driver):
+    """Returns the filters for current page"""
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    current_comp = soup.find(class_="current", attrs={"data-dropdown-current": "comps"})
+    competition = current_comp.get_text().strip("\"")
+    current_season = soup.find(class_="current", attrs={"data-dropdown-current": "compSeasons"})
+    season = current_season.get_text().strip("\"").replace("/", "-")
+    if len(season) > 7:
+        season = re.search(r'(\d\d\d\d-)\d\d(\d\d)', season)
+        season = season.group(1)+season.group(2)
+    current_team = soup.find(class_="current", attrs={"data-dropdown-current": "teams"})
+    team = current_team.get_text().strip("\"")
+    return competition, season, team
+
+
+def set_filters(driver, competition, season, team):
+    """Set required filters to get the right result page"""
+    if competition:
+        try:
+            comp_elem = driver.find_element(By.CSS_SELECTOR, f"li[data-option-name='{competition}']")
+        except NoSuchElementException:
+            print(f"Error: Competition '{competition}' was not found. Please choose from the following list:")
+            soup = BeautifulSoup(driver.page_source, "html.parser")
+            current_comp = soup.find(class_="dropdownList", attrs={"data-dropdown-list": "comps"})
+            comp_list = current_comp.find_all('li')
+            for comp in comp_list:
+                print(comp.get_text())
+            sys.exit(1)
+        driver.execute_script("arguments[0].click();", comp_elem)
+        time.sleep(PAUSE_TIME)
+
+    if season:
+        try:
+            season_elem = driver.find_element(By.CSS_SELECTOR, f"li[data-option-name='{season}']")
+        except NoSuchElementException:
+            print(f"Error: Season '{season}' was not found. Please choose from the following list:")
+            soup = BeautifulSoup(driver.page_source, "html.parser")
+            current_season = soup.find(class_="dropdownList", attrs={"data-dropdown-list": "compSeasons"})
+            season_list = current_season.find_all('li')
+            for season_ in season_list:
+                print(season_.get_text())
+            sys.exit(1)
+        driver.execute_script("arguments[0].click();", season_elem)
+        time.sleep(PAUSE_TIME)
+    
+    if team:
+        try:
+            team_elem = driver.find_element(By.CSS_SELECTOR, f"li[data-option-name='{team}']")
+        except NoSuchElementException:
+            print(f"Error: Team '{team}' was not found. Please choose from the following list:")
+            soup = BeautifulSoup(driver.page_source, "html.parser")
+            current_team = soup.find(class_="dropdownList", attrs={"data-dropdown-list": "teams"})
+            team_list = current_team.find_all('li')
+            for team_ in team_list:
+                print(team_.get_text())
+            sys.exit(1)
+        driver.execute_script("arguments[0].click();", team_elem)
+        time.sleep(PAUSE_TIME)
+
+
+def scrape_match_results(driver, competition, season, team):
+    """Scrape all match results for specified, competition, season and team"""
+
     results = []
     driver.get('https://www.premierleague.com/results')
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "fixtures__matches-list"))
     webdriver_wait.until(condition)
+
+    set_filters(driver, competition, season, team)
+
+    competition, season, team = get_current_filters(driver)
+
+    print("Scraping match results for:")
+    print(f"Competition: {competition}")
+    print(f"Season: {season}")
+    print(f"Team: {team}")
+
     last_height = driver.execute_script("return document.body.scrollHeight")
 
     while True:
@@ -146,7 +220,7 @@ def scrape_match_results(driver):
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
         # Wait to load page
-        time.sleep(SCROLL_PAUSE_TIME)
+        time.sleep(PAUSE_TIME)
 
         # Calculate new scroll height and compare with last scroll height
         new_height = driver.execute_script("return document.body.scrollHeight")
@@ -171,15 +245,28 @@ def scrape_match_results(driver):
                             scores[SCORE_AWAY]])
 
     df = pd.DataFrame(results, columns=RESULTS_COLUMNS)
-    df.to_csv('match_results.csv', index=False)
+    df.to_csv(f"match_results_{competition}_{season}_{team}.csv", index=False)
+    return f"match_results_{competition}_{season}_{team}.csv"
 
 
 def main():
+    parser = ArgumentParser()
+    parser.add_argument("type", choices=["results", "stats", "all"])
+    parser.add_argument("--competition", action="store", default="", nargs='+')
+    parser.add_argument("--season", action="store", default="", nargs='+')
+    parser.add_argument("--team", action="store", default="", nargs='+')
+    args = parser.parse_args()
+    competition = ' '.join(args.competition)
+    season = ' '.join(args.season)
+    team = ' '.join(args.team)
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        scrape_match_results(driver)
-        scrape_all_match_stats(driver)
+        filename = ""
+        if args.type == "results" or args.type == "all":
+            filename = scrape_match_results(driver, competition, season, team)
+        if args.type == "stats" or args.type == "all":
+            scrape_all_match_stats(driver, competition, season, team, filename)
 
 
 if __name__ == "__main__":
