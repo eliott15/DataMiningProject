@@ -12,7 +12,7 @@ import csv
 from argparse import ArgumentParser
 import sys
 
-TIMEOUT = 10
+TIMEOUT = 3
 SCORE_HOME = 0
 SCORE_AWAY = 2
 RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
