@@ -1,9 +1,10 @@
+import os
 import re
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import time
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -57,10 +58,13 @@ def scrape_match_stats(driver, match_id):
     print(f"Scraping match stats for match_id: {match_id}")
     driver.get("https://www.premierleague.com/match/" + match_id)
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
-    condition = EC.presence_of_element_located((By.CLASS_NAME, "pl-modal"))
-    webdriver_wait.until(condition)
-    condition = EC.presence_of_element_located((By.CLASS_NAME, "kotm-player__first-name"))
-    webdriver_wait.until(condition)
+
+    try:
+        condition = EC.presence_of_element_located((By.CLASS_NAME, "kotm-player__first-name"))
+        webdriver_wait.until(condition)
+        has_king_of_match = True
+    except TimeoutException:
+        has_king_of_match = False
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
@@ -86,45 +90,88 @@ def scrape_match_stats(driver, match_id):
     if len(list(away_assists_list.children)) > 1:
         away_assists = parse_assists(away_assists_list.find_all(class_="event"))
 
-    king_of_the_match = soup.find(class_="kotm-player__first-name").get_text() + " " \
-                        + soup.find(class_="kotm-player__second-name").get_text()
+    if has_king_of_match:
+        king_of_the_match = soup.find(class_="kotm-player__first-name").get_text() + " " \
+                            + soup.find(class_="kotm-player__second-name").get_text()
+    else:
+        king_of_the_match = ""
 
     stat_tab = driver.find_element(By.CSS_SELECTOR, "li[role='tab'][data-tab-index='2']")
     stat_tab.click()
 
-    condition = EC.presence_of_element_located((By.CSS_SELECTOR, "tbody[class='matchCentreStatsContainer'] > tr"))
-    webdriver_wait = WebDriverWait(driver, TIMEOUT)
-    webdriver_wait.until(condition)
+    has_stats = False
+    try:
+        condition = EC.presence_of_element_located((By.CSS_SELECTOR, "tbody[class='matchCentreStatsContainer'] > tr"))
+        webdriver_wait = WebDriverWait(driver, TIMEOUT)
+        webdriver_wait.until(condition)
+        has_stats = True
+    except TimeoutException:
+        pass
 
-    soup = BeautifulSoup(driver.page_source, "html.parser")
-    stats_container = soup.find(class_="matchCentreStatsContainer")
-    stat_lines = stats_container.find_all("tr")
     stats_list = []
     stats_columns_list = []
-    has_red_cards = False
-    for stat_line in stat_lines:
-        stat_columns = list(stat_line.find_all("td"))
-        if stat_columns[1].get_text() == "Red cards":
-            has_red_cards = True
-        if not has_red_cards and stat_columns[1].get_text() == "Fouls conceded":
-            stats_columns_list.append("Home Red cards")
-            stats_columns_list.append("Away Red cards")
-            stats_list.append("0")
-            stats_list.append("0")
-        stats_columns_list.append("Home " + stat_columns[1].get_text())
-        stats_columns_list.append("Away " + stat_columns[1].get_text())
-        stats_list.append(stat_columns[0].get_text())
-        stats_list.append(stat_columns[2].get_text())
-    # print(stats_dict)
+
+    if has_stats:
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+        stats_container = soup.find(class_="matchCentreStatsContainer")
+        stat_lines = stats_container.find_all("tr")
+        has_yellow_cards = False
+        has_red_cards = False
+        has_offsides = False
+        for stat_line in stat_lines:
+            stat_columns = list(stat_line.find_all("td"))
+            if stat_columns[1].get_text() == "Yellow cards":
+                has_yellow_cards = True
+            if stat_columns[1].get_text() == "Red cards":
+                has_red_cards = True
+            if stat_columns[1].get_text() == "Offsides":
+                has_offsides = True
+            if not has_offsides and (stat_columns[1].get_text() == "Yellow cards" or
+                    stat_columns[1].get_text() == "Red cards" or stat_columns[1].get_text() == "Fouls conceded"):
+                stats_columns_list.append("Home Offsides")
+                stats_columns_list.append("Away Offsides")
+                stats_list.append("0")
+                stats_list.append("0")
+                has_offsides = True
+            if not has_yellow_cards and (
+                    stat_columns[1].get_text() == "Red cards" or stat_columns[1].get_text() == "Fouls conceded"):
+                stats_columns_list.append("Home Yellow cards")
+                stats_columns_list.append("Away Yellow cards")
+                stats_list.append("0")
+                stats_list.append("0")
+                has_yellow_cards = True
+            if not has_red_cards and stat_columns[1].get_text() == "Fouls conceded":
+                stats_columns_list.append("Home Red cards")
+                stats_columns_list.append("Away Red cards")
+                stats_list.append("0")
+                stats_list.append("0")
+            stats_columns_list.append("Home " + stat_columns[1].get_text())
+            stats_columns_list.append("Away " + stat_columns[1].get_text())
+            stats_list.append(stat_columns[0].get_text())
+            stats_list.append(stat_columns[2].get_text())
     return stats_columns_list, [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards,
                                 away_goals,
                                 away_red_cards, home_assists, away_assists, king_of_the_match] + stats_list
 
 
-def scrape_all_match_stats(driver):
+def scrape_all_match_stats(driver, competition, season, team, filename):
     """Scrapes all the stats for the matches in match_results.csv"""
     stats = []
-    with open('match_results.csv', 'r') as results_file:
+    if not filename:
+        driver.get('https://www.premierleague.com/results')
+        webdriver_wait = WebDriverWait(driver, TIMEOUT)
+        condition = EC.presence_of_element_located((By.CLASS_NAME, "fixtures__matches-list"))
+        webdriver_wait.until(condition)
+
+        set_filters(driver, competition, season, team)
+
+        competition, season, team = get_current_filters(driver)
+        filename = f"match_results_{competition}_{season}_{team}.csv"
+    if not os.path.exists(filename):
+        print(f"Error: {filename} does not exist.\n"
+              "Please choose 'results' or 'all' to scrape results for specified filters before scraping stats.")
+        sys.exit(1)
+    with open(filename, 'r') as results_file:
         match_results = csv.DictReader(results_file)
         for match_result in match_results:
             columns_to_add, match_stats = scrape_match_stats(driver, match_result['Match ID'])
@@ -132,7 +179,9 @@ def scrape_all_match_stats(driver):
 
     stats_columns_whole = STATS_COLUMNS + columns_to_add
     df = pd.DataFrame(stats, columns=stats_columns_whole)
-    df.to_csv('match_stats.csv', index=False)
+    filename = filename.replace("results", "stats")
+    df.to_csv(filename, index=False)
+    return filename
 
 
 def get_current_filters(driver):
@@ -144,7 +193,7 @@ def get_current_filters(driver):
     season = current_season.get_text().strip("\"").replace("/", "-")
     if len(season) > 7:
         season = re.search(r'(\d\d\d\d-)\d\d(\d\d)', season)
-        season = season.group(1)+season.group(2)
+        season = season.group(1) + season.group(2)
     current_team = soup.find(class_="current", attrs={"data-dropdown-current": "teams"})
     team = current_team.get_text().strip("\"")
     return competition, season, team
@@ -179,7 +228,7 @@ def set_filters(driver, competition, season, team):
             sys.exit(1)
         driver.execute_script("arguments[0].click();", season_elem)
         time.sleep(PAUSE_TIME)
-    
+
     if team:
         try:
             team_elem = driver.find_element(By.CSS_SELECTOR, f"li[data-option-name='{team}']")
@@ -265,8 +314,10 @@ def main():
         filename = ""
         if args.type == "results" or args.type == "all":
             filename = scrape_match_results(driver, competition, season, team)
+            print(f"Successfully scraped results to {filename}")
         if args.type == "stats" or args.type == "all":
-            scrape_all_match_stats(driver, competition, season, team, filename)
+            filename = scrape_all_match_stats(driver, competition, season, team, filename)
+            print(f"Successfully scraped stats to {filename}")
 
 
 if __name__ == "__main__":
