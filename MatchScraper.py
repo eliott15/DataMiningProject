@@ -127,7 +127,8 @@ def scrape_match_stats(driver, match_id):
             if stat_columns[1].get_text() == "Offsides":
                 has_offsides = True
             if not has_offsides and (stat_columns[1].get_text() == "Yellow cards" or
-                    stat_columns[1].get_text() == "Red cards" or stat_columns[1].get_text() == "Fouls conceded"):
+                                     stat_columns[1].get_text() == "Red cards" or
+                                     stat_columns[1].get_text() == "Fouls conceded"):
                 stats_columns_list.append("Home Offsides")
                 stats_columns_list.append("Away Offsides")
                 stats_list.append("0")
