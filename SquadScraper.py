@@ -55,8 +55,6 @@ def scrape_team_squad(driver, url):
     webdriver_wait.until(condition)
     soup = BeautifulSoup(driver.page_source, "html.parser")
     player_names = soup.find_all(class_='playerCardInfo')
-    print(player_names[0].get_text().split())
-    print(player_names[-1])
     players = []
     for i in range(len(player_names)):
         info = player_names[i].get_text().split()
@@ -66,7 +64,6 @@ def scrape_team_squad(driver, url):
             number, name, position = info[0], info[1], info[2]
         p = Player(number=number, name = name, position=position)
         players.append(p)
-
 
 
 def main():
