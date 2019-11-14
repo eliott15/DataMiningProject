@@ -10,14 +10,13 @@ URL = 'https://www.premierleague.com'
 
 
 class Player:
-    def __init__(self, first_name="", last_name="", number="",position="" ,nationality="" ,appearances="", goals="0", assists="0"):
-        self.first_name = first_name
-        self.last_name = last_name
+    def __init__(self, name="", number="",position="", clean_sheets="" ,nationality="" ,appearances="", goals="0", assists="0"):
+        self.name = name
         self.number = number
         self.position = position
         self.nationality = nationality
         self.appearances = appearances
-        self.clean_sheets
+        self.clean_sheets = clean_sheets
         self.goals = goals
         self.assists = assists
 
@@ -61,8 +60,13 @@ def scrape_team_squad(driver, url):
     players = []
     for i in range(len(player_names)):
         info = player_names[i].get_text().split()
-        number, first_name, last_name, position = info[0], info[1], info[2], info[3]
-        p = Player(number=number, first_name=first_name, last_name=last_name, position=position)
+        if len(info) > 3:
+            number, name, position = info[0], info[1] + ' ' + info[2], info[3]
+        else:
+            number, name, position = info[0], info[1], info[2]
+        p = Player(number=number, name = name, position=position)
+        players.append(p)
+
 
 
 def main():
@@ -72,7 +76,6 @@ def main():
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
         urls = scrape_url_team(driver)
     urls = convert_urls_to_stats(urls)
-    print(urls)
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
         scrape_team_squad(driver, urls[0])
 
