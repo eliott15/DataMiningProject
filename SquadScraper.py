@@ -7,11 +7,12 @@ import pandas as pd
 
 TIMEOUT = 10
 URL = 'https://www.premierleague.com'
-
+COLUMN_NAMES = ["name","club" ,"number", "position", "clean_sheets", "nationality", "appearances", "goals", "assists"]
 
 class Player:
-    def __init__(self, name="", number="",position="", clean_sheets="" ,nationality="" ,appearances="", goals="0", assists="0"):
+    def __init__(self, name="", number="",position="", clean_sheets="" ,nationality="" ,appearances="", goals="0", assists="0", team=""):
         self.name = name
+        self.team = team
         self.number = number
         self.position = position
         self.nationality = nationality
@@ -62,8 +63,42 @@ def scrape_team_squad(driver, url):
             number, name, position = info[0], info[1] + ' ' + info[2], info[3]
         else:
             number, name, position = info[0], info[1], info[2]
-        p = Player(number=number, name = name, position=position)
+        p = Player(number=number, name=name, position=position)
         players.append(p)
+    player_stats = soup.find_all(class_='squadPlayerStats')
+
+    for i in range(len(player_stats)):
+        print(player_stats[i].get_text().split())
+        info = player_stats[i].get_text().split()
+        j = 1
+        nationality = ''
+        while info[j] != 'Appearances':
+            nationality += info[j] + ' '
+        j += 1
+        appearances = info[j]
+        j += 1
+        if len(info[j:]) == 3:
+            clean_sheets = info[-1]
+            player_stats[i].appearances = appearances
+            player_stats[i].clean_sheets = clean_sheets
+        elif len(info[j:]) == 5:
+            clean_sheets = info[j+2]
+            goals = info[-1]
+            player_stats[i].appearances = appearances
+            player_stats[i].goals = goals
+            player_stats[i].clean_sheets = clean_sheets
+        elif len(info[j:]) == 4:
+            goals = info[j+1]
+            assists = info[-1]
+            player_stats[i].appearances = appearances
+            player_stats[i].goals = goals
+            player_stats[i].assists = assists
+    return players
+
+
+#TODO
+def write_to_csv(players, team):
+    return
 
 
 def main():
