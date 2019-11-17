@@ -4,15 +4,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pd
+import os
+from argparse import ArgumentParser
 
 TIMEOUT = 10
 URL = 'https://www.premierleague.com'
-COLUMN_NAMES = ["name","club" ,"number", "position", "clean_sheets", "nationality", "appearances", "goals", "assists"]
+COLUMN_NAMES = ["Club", "Name", "Number", "Position", "Nationality", "Appearances", "Clean Sheets", "Goals", "Assists"]
+DIRECTORY = "Squads_Players"
+
 
 class Player:
-    def __init__(self, name="", number="",position="", clean_sheets="" ,nationality="" ,appearances="", goals="0", assists="0", team=""):
-        self.name = name
+    def __init__(self, name="", number="", position="", clean_sheets="", nationality="", appearances="", goals="",
+                 assists="", team=""):
         self.team = team
+        self.name = name
         self.number = number
         self.position = position
         self.nationality = nationality
@@ -20,6 +25,10 @@ class Player:
         self.clean_sheets = clean_sheets
         self.goals = goals
         self.assists = assists
+
+    def __repr__(self):
+        return "Name: " + str(self.name) + "; Number: " + self.number + "; Position: " + str(
+            self.position) + "; Nationality: " + str(self.nationality)
 
 
 def scrape_url_team(driver):
@@ -50,6 +59,7 @@ def convert_urls_to_stats(urls):
 
 
 def scrape_team_squad(driver, url):
+    team = url_to_team(url)
     driver.get(url)
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "playerCardInfo"))
@@ -60,56 +70,98 @@ def scrape_team_squad(driver, url):
     for i in range(len(player_names)):
         info = player_names[i].get_text().split()
         if len(info) > 3:
-            number, name, position = info[0], info[1] + ' ' + info[2], info[3]
+            number, name, position = info[0], ' '.join(info[1:-1]), info[-1]
         else:
             number, name, position = info[0], info[1], info[2]
-        p = Player(number=number, name=name, position=position)
+        p = Player(number=number, name=name, position=position, team=team)
         players.append(p)
+
     player_stats = soup.find_all(class_='squadPlayerStats')
 
     for i in range(len(player_stats)):
-        print(player_stats[i].get_text().split())
         info = player_stats[i].get_text().split()
         j = 1
         nationality = ''
         while info[j] != 'Appearances':
             nationality += info[j] + ' '
+            j += 1
         j += 1
         appearances = info[j]
         j += 1
         if len(info[j:]) == 3:
             clean_sheets = info[-1]
-            player_stats[i].appearances = appearances
-            player_stats[i].clean_sheets = clean_sheets
+            players[i].nationality = nationality
+            players[i].appearances = appearances
+            players[i].clean_sheets = clean_sheets
         elif len(info[j:]) == 5:
-            clean_sheets = info[j+2]
+            clean_sheets = info[j + 2]
             goals = info[-1]
-            player_stats[i].appearances = appearances
-            player_stats[i].goals = goals
-            player_stats[i].clean_sheets = clean_sheets
+            players[i].nationality = nationality
+            players[i].appearances = appearances
+            players[i].goals = goals
+            players[i].clean_sheets = clean_sheets
         elif len(info[j:]) == 4:
-            goals = info[j+1]
+            goals = info[j + 1]
             assists = info[-1]
-            player_stats[i].appearances = appearances
-            player_stats[i].goals = goals
-            player_stats[i].assists = assists
+            players[i].nationality = nationality
+            players[i].appearances = appearances
+            players[i].goals = goals
+            players[i].assists = assists
     return players
 
 
-#TODO
 def write_to_csv(players, team):
-    return
+    result = []
+    filename = DIRECTORY + '/' + team + '_players.csv'
+    for player in players:
+        result.append(list(player.__dict__.values()))
+    df = pd.DataFrame(result, columns=COLUMN_NAMES)
+    df.to_csv(filename, index=False)
+
+
+def url_to_team(url):
+    return url.split('/')[-2]
+
+
+def team_to_url(team, urls):
+    team = team.title()
+    match = [s for s in urls if team in s]
+    try:
+        url = match[0]
+    except IndexError:
+        print("Please provide a valid club name.")
+        return
+    return url
 
 
 def main():
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument("--team", action="store", default="", nargs="+")
+    args = arg_parser.parse_args()
+    team = args.team
+    team = '-'.join(team)
+    if not os.path.exists(DIRECTORY):
+        os.mkdir(DIRECTORY)
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")
-
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
         urls = scrape_url_team(driver)
     urls = convert_urls_to_stats(urls)
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        scrape_team_squad(driver, urls[0])
+        if not team:
+            for url in urls:
+                team = url_to_team(url)
+                print("Scraping {}'s players data...".format(team))
+                players = scrape_team_squad(driver, url)
+                write_to_csv(players, team)
+            return
+        else:
+            print("Scraping {}'s players data...".format(team))
+            url = team_to_url(team, urls)
+            if url:
+                players = scrape_team_squad(driver, url)
+                write_to_csv(players, team)
+            return
 
 
 if __name__ == '__main__':
