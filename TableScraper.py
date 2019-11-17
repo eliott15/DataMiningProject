@@ -109,7 +109,7 @@ def scrape_table(driver, season, match_week, home_or_away):
 
     body = table_tag.find("tbody")
     for row in body.find_all("tr"):
-        if row.get("class")[0] == "expandable":
+        if row.get("class") and row.get("class")[0] == "expandable":
             continue
         else:
             table_line = []

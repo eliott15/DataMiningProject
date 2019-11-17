@@ -290,7 +290,7 @@ def scrape_match_results(driver, competition, season, team):
                             match_date,
                             match["data-home"],
                             match["data-away"],
-                            BeautifulSoup(match["data-venue"], "lxml").get_text(),
+                            BeautifulSoup(match["data-venue"]).get_text(),
                             scores[SCORE_HOME],
                             scores[SCORE_AWAY]])
 
