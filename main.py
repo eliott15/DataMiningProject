@@ -13,3 +13,7 @@ def main():
     print("##########################")
     print("Scraping Premier League table season 2015-2016 at Home, at the 18th match week ")
     os.system(" python TableScraper.py --season 2015/16 --match_week 18 --home_or_away Home")
+
+
+if __name__ == '__main__':
+    main()
