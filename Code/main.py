@@ -1,20 +1,20 @@
 import os
+import re
+from argparse import ArgumentParser
 
 
 def main():
-    if not os.path.exists('Data'):
-        os.makedirs('Data')
-    print("Scraping all Liverpool players and their statistics:")
-    os.system("python SquadScraper.py --team Liverpool")
-    print("##########################")
-    print("Scrapping all Premier League Statistics for season 2017/2018")
-    os.system("python TeamStatsScraper.py --season 2017/18")
-    print("##########################")
-    print("Scrapping all Premier League results for Leicester City during 2015/2016")
-    os.system(" python MatchScraper.py results --competition Premier League --season 2015/16 --team Leicester City")
-    print("##########################")
-    print("Scraping Premier League table season 2015-2016 at Home, at the 18th match week ")
-    os.system(" python TableScraper.py --season 2015/16 --match_week 18 --home_or_away Home")
+    if not os.path.exists('../Data'):
+        os.makedirs('../Data')
+    scraper_list = []
+    for file in os.listdir('.'):
+        match = re.search(r'(.*)Scraper.py', file)
+        if match:
+            scraper_list.append(match.group(1))
+    parser = ArgumentParser()
+    parser.add_argument('scraper', choices=scraper_list)
+    args, subargs = parser.parse_known_args()
+    os.system(f"python {args.scraper}Scraper.py {' '.join(subargs)}")
 
 
 if __name__ == '__main__':

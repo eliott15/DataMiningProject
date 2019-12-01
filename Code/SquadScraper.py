@@ -112,7 +112,7 @@ def write_to_csv(players, team):
     for player in players:
         result.append(list(player.__dict__.values()))
     df = pd.DataFrame(result, columns=COLUMN_NAMES)
-    df.to_csv('Data/' + filename, index=False)
+    df.to_csv('../Data/' + filename, index=False)
 
 
 def url_to_team(url):

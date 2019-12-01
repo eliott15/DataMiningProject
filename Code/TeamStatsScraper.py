@@ -103,7 +103,7 @@ def stats_to_csv(dictionary, season):
         season = season.replace('/', '-')
     else:
         season = "All Seasons"
-    df.to_csv('Data/' + f"Team_stats_{season}.csv", index=False)
+    df.to_csv('../Data/' + f"Team_stats_{season}.csv", index=False)
 
 
 def convert_url_to_stats(url):
