@@ -23,7 +23,6 @@ def scrape_url_team(driver, season):
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "indexBadge"))
     webdriver_wait.until(condition)
-    # condition = EC.presence_of_element_located((By.CLASS_NAME, "dropdownList"))
     condition = EC.presence_of_element_located((By.CSS_SELECTOR, "ul[class='dropdownList'] > li"))
     webdriver_wait.until(condition)
 
@@ -104,7 +103,7 @@ def stats_to_csv(dictionary, season):
         season = season.replace('/', '-')
     else:
         season = "All Seasons"
-    df.to_csv(f"Team_stats_{season}.csv", index=False)
+    df.to_csv('Data/' + f"Team_stats_{season}.csv", index=False)
 
 
 def convert_url_to_stats(url):

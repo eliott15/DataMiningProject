@@ -2,6 +2,8 @@ import os
 
 
 def main():
+    if not os.path.exists('Data'):
+        os.makedirs('Data')
     print("Scraping all Liverpool players and their statistics:")
     os.system("python SquadScraper.py --team Liverpool")
     print("##########################")

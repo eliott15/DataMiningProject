@@ -129,8 +129,8 @@ def scrape_table(driver, season, match_week, home_or_away):
 
     df = pd.DataFrame(table, columns=table_headers)
     filename = f"table_Premier League_{season}_{match_week}_{home_or_away}.csv"
-    df.to_csv(filename, index=False)
-    return filename
+    df.to_csv('Data/' + filename, index=False)
+    return 'Data/' + filename
 
 
 def main():

@@ -181,8 +181,8 @@ def scrape_all_match_stats(driver, competition, season, team, filename):
     stats_columns_whole = STATS_COLUMNS + columns_to_add
     df = pd.DataFrame(stats, columns=stats_columns_whole)
     filename = filename.replace("results", "stats")
-    df.to_csv(filename, index=False)
-    return filename
+    df.to_csv('Data/' + filename, index=False)
+    return 'Data/' + filename
 
 
 def get_current_filters(driver):
@@ -295,8 +295,8 @@ def scrape_match_results(driver, competition, season, team):
                             scores[SCORE_AWAY]])
 
     df = pd.DataFrame(results, columns=RESULTS_COLUMNS)
-    df.to_csv(f"match_results_{competition}_{season}_{team}.csv", index=False)
-    return f"match_results_{competition}_{season}_{team}.csv"
+    df.to_csv('Data/' + f"match_results_{competition}_{season}_{team}.csv", index=False)
+    return 'Data/' + f"match_results_{competition}_{season}_{team}.csv"
 
 
 def main():
