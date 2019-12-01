@@ -32,7 +32,6 @@ class Player:
 
 
 def scrape_url_team(driver):
-    """Scrape all match results for specified, competition, season and team"""
     urls = []
     driver.get('https://www.premierleague.com/clubs')
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
