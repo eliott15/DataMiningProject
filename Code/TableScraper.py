@@ -120,21 +120,10 @@ def scrape_table(driver, season, match_week, home_or_away):
     return '../Data/' + filename
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("--season", action="store", default="", nargs='+')
-    parser.add_argument("--match_week", action="store", default="", nargs='+')
-    parser.add_argument("--home_or_away", action="store", default="", nargs='+')
-    args = parser.parse_args()
-    season = ' '.join(args.season)
-    match_week = ' '.join(args.match_week)
-    home_or_away = ' '.join(args.home_or_away)
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("headless")
-    with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        filename = scrape_table(driver, season, match_week, home_or_away)
-        print(f"Successfully scraped table to {filename}")
-
-
-if __name__ == "__main__":
-    main()
+class TableScraper:
+    def __init__(self, season, match_week, home_or_away):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("headless")
+        with webdriver.Chrome(chrome_options=chrome_options) as driver:
+            filename = scrape_table(driver, season, match_week, home_or_away)
+            print(f"Successfully scraped table to {filename}")

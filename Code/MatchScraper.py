@@ -279,27 +279,16 @@ def scrape_match_results(driver, competition, season, team):
     return '../Data/' + f"match_results_{competition}_{season}_{team}.csv"
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("type", choices=["results", "stats", "all"])
-    parser.add_argument("--competition", action="store", default="", nargs='+')
-    parser.add_argument("--season", action="store", default="", nargs='+')
-    parser.add_argument("--team", action="store", default="", nargs='+')
-    args = parser.parse_args()
-    competition = ' '.join(args.competition)
-    season = ' '.join(args.season)
-    team = ' '.join(args.team)
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("headless")
-    with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        filename = ""
-        if args.type == "results" or args.type == "all":
-            filename = scrape_match_results(driver, competition, season, team)
-            print(f"Successfully scraped results to {filename}")
-        if args.type == "stats" or args.type == "all":
-            filename = scrape_all_match_stats(driver, competition, season, team, filename)
-            print(f"Successfully scraped stats to {filename}")
+class MatchScraper:
+    def __init__(self, type, competition, season, team):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("headless")
+        with webdriver.Chrome(chrome_options=chrome_options) as driver:
+            filename = ""
+            if type == "results" or type == "all":
+                filename = scrape_match_results(driver, competition, season, team)
+                print(f"Successfully scraped results to {filename}")
+            if type == "stats" or type == "all":
+                filename = scrape_all_match_stats(driver, competition, season, team, filename)
+                print(f"Successfully scraped stats to {filename}")
 
-
-if __name__ == "__main__":
-    main()

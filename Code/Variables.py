@@ -21,5 +21,6 @@ SCORE_AWAY = 2
 RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
 STATS_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HT Score", "Home Goals", "Home RC events",
                  "Away Goals", "Away RC events", "Home Assists", "Away Assists", "King of the Match"]
-PLAYER_COLUMN_NAMES = ["Club", "Name", "Number", "Position", "Nationality", "Appearances", "Clean Sheets", "Goals", "Assists"]
+PLAYER_COLUMN_NAMES = ["Club", "Name", "Number", "Position", "Nationality", "Appearances", "Clean Sheets", "Goals",
+                       "Assists"]
 PLAYER_DIRECTORY = "Squads_Players"

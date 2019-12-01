@@ -107,20 +107,12 @@ def convert_urls_to_stats(urls):
     return list(map(convert_url_to_stats, urls))
 
 
-def main():
-    arg_parser = ArgumentParser()
-    arg_parser.add_argument("--season", action="store", default="", nargs="+")
-    args = arg_parser.parse_args()
-    season = ' '.join(args.season)
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("headless")
-
-    with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        urls = scrape_url_team(driver, season)
-        urls = convert_urls_to_stats(urls)
-        teams_stat = scrape_all_teams_stat(driver, urls, season)
-    stats_to_csv(teams_stat, season)
-
-
-if __name__ == '__main__':
-    main()
+class TeamStatsScraper:
+    def __init__(self, season):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("headless")
+        with webdriver.Chrome(chrome_options=chrome_options) as driver:
+            urls = scrape_url_team(driver, season)
+            urls = convert_urls_to_stats(urls)
+            teams_stat = scrape_all_teams_stat(driver, urls, season)
+        stats_to_csv(teams_stat, season)
