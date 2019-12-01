@@ -90,23 +90,19 @@ def scrape_team_squad(driver, url):
         j += 1
         if len(info[j:]) == 3:
             clean_sheets = info[-1]
-            players[i].nationality = nationality
-            players[i].appearances = appearances
             players[i].clean_sheets = clean_sheets
         elif len(info[j:]) == 5:
             clean_sheets = info[j + 2]
             goals = info[-1]
-            players[i].nationality = nationality
-            players[i].appearances = appearances
             players[i].goals = goals
             players[i].clean_sheets = clean_sheets
         elif len(info[j:]) == 4:
             goals = info[j + 1]
             assists = info[-1]
-            players[i].nationality = nationality
-            players[i].appearances = appearances
             players[i].goals = goals
             players[i].assists = assists
+        players[i].nationality = nationality
+        players[i].appearances = appearances
     return players
 
 
