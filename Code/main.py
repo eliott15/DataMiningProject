@@ -1,6 +1,4 @@
-import os
-import re
-from argparse import ArgumentParser
+from Code.Variables import *
 
 
 def main():

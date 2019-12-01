@@ -1,18 +1,4 @@
-import sys
-import time
-
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from bs4 import BeautifulSoup
-import pandas as pd
-from argparse import ArgumentParser
-
-TIMEOUT = 10
-URL = 'https://www.premierleague.com'
-PAUSE_TIME = 2
+from Code.Variables import *
 
 
 def scrape_url_team(driver, season):

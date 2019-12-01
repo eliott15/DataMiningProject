@@ -1,17 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-import time
-from bs4 import BeautifulSoup
-import pandas as pd
-from argparse import ArgumentParser
-import sys
-
-TIMEOUT = 3
-PAUSE_TIME = 2
-COLUMN_NUMBER = 10
+from Code.Variables import *
 
 
 def set_filters(driver, season, match_week, home_or_away):
@@ -105,7 +92,7 @@ def scrape_table(driver, season, match_week, home_or_away):
     offset = 0
     if table_headers[0] == "More":
         offset = 1
-    table_headers = table_headers[offset:COLUMN_NUMBER + offset]
+    table_headers = table_headers[offset:TABLE_COLUMN_NUMBER + offset]
 
     body = table_tag.find("tbody")
     for row in body.find_all("tr"):
@@ -124,7 +111,7 @@ def scrape_table(driver, season, match_week, home_or_away):
                     else:
                         cell_content = cell.get_text()
                 table_line.append(cell_content)
-            table_line = table_line[offset:COLUMN_NUMBER + offset]
+            table_line = table_line[offset:TABLE_COLUMN_NUMBER + offset]
             table.append(table_line)
 
     df = pd.DataFrame(table, columns=table_headers)
@@ -135,7 +122,6 @@ def scrape_table(driver, season, match_week, home_or_away):
 
 def main():
     parser = ArgumentParser()
-
     parser.add_argument("--season", action="store", default="", nargs='+')
     parser.add_argument("--match_week", action="store", default="", nargs='+')
     parser.add_argument("--home_or_away", action="store", default="", nargs='+')

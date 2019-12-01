@@ -1,24 +1,4 @@
-import os
-import re
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-import time
-from bs4 import BeautifulSoup
-import pandas as pd
-import csv
-from argparse import ArgumentParser
-import sys
-
-TIMEOUT = 3
-SCORE_HOME = 0
-SCORE_AWAY = 2
-RESULTS_COLUMNS = ["Match ID", "Date", "Home Team", "Away Team", "Stadium", "Home Score", "Away Score"]
-STATS_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HT Score", "Home Goals", "Home RC events",
-                 "Away Goals", "Away RC events", "Home Assists", "Away Assists", "King of the Match"]
-PAUSE_TIME = 2
+from Code.Variables import *
 
 
 def parse_events(events):

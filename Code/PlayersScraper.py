@@ -1,16 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from bs4 import BeautifulSoup
-import pandas as pd
-import os
-from argparse import ArgumentParser
-
-TIMEOUT = 10
-URL = 'https://www.premierleague.com'
-COLUMN_NAMES = ["Club", "Name", "Number", "Position", "Nationality", "Appearances", "Clean Sheets", "Goals", "Assists"]
-DIRECTORY = "Squads_Players"
+from Code.Variables import *
 
 
 class Player:
@@ -31,18 +19,53 @@ class Player:
             self.position) + "; Nationality: " + str(self.nationality)
 
 
-def scrape_url_team(driver):
+def scrape_url_team(driver, season):
     urls = []
     driver.get('https://www.premierleague.com/clubs')
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
     condition = EC.presence_of_element_located((By.CLASS_NAME, "indexBadge"))
     webdriver_wait.until(condition)
+
+    set_filters(driver, season)
+
+    season = get_current_filters(driver)
+
     soup = BeautifulSoup(driver.page_source, "html.parser")
     tags = soup.find_all('a', class_='indexItem', href=True)
     for tag in tags:
         url = tag['href']
         urls.append(url)
-    return urls
+    return urls, season
+
+
+def set_filters(driver, season):
+    if season:
+        webdriver_wait = WebDriverWait(driver, TIMEOUT)
+        condition = EC.presence_of_element_located((By.CSS_SELECTOR, "ul[class='dropdownList'] > li"))
+        webdriver_wait.until(condition)
+        try:
+            season_elem = driver.find_element(By.CSS_SELECTOR, f"li[data-option-name='{season}']")
+        except NoSuchElementException:
+            print(f"Error: Season '{season}' was not found. Please choose from the following list:")
+            soup = BeautifulSoup(driver.page_source, "html.parser")
+            current_season = soup.find(class_="dropdownList", attrs={"data-dropdown-list": "compSeasons"})
+            season_list = current_season.find_all('li')
+            for season_ in season_list:
+                print(season_.get_text())
+            sys.exit(1)
+        driver.execute_script("arguments[0].click();", season_elem)
+        time.sleep(PAUSE_TIME)
+
+
+def get_current_filters(driver):
+    """Returns the filters for current page"""
+    webdriver_wait = WebDriverWait(driver, TIMEOUT)
+    condition = EC.presence_of_element_located((By.CLASS_NAME, "current"))
+    webdriver_wait.until(condition)
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    current_season = soup.find(class_="current", attrs={"data-dropdown-current": "compSeasons"})
+    season = current_season.get_text().strip("\"").replace("/", "-")
+    return season
 
 
 def convert_url_to_stats(url):
@@ -57,12 +80,19 @@ def convert_urls_to_stats(urls):
     return list(map(convert_url_to_stats, urls))
 
 
-def scrape_team_squad(driver, url):
+def scrape_team_squad(driver, url, season):
     team = url_to_team(url)
     driver.get(url)
-    webdriver_wait = WebDriverWait(driver, TIMEOUT)
-    condition = EC.presence_of_element_located((By.CLASS_NAME, "playerCardInfo"))
-    webdriver_wait.until(condition)
+    try:
+        webdriver_wait = WebDriverWait(driver, TIMEOUT)
+        condition = EC.presence_of_element_located((By.CLASS_NAME, "playerCardInfo"))
+        webdriver_wait.until(condition)
+    except TimeoutException:
+        print("No players data was found for chosen team and season, exiting...")
+        sys.exit(1)
+
+    set_filters(driver, season)
+
     soup = BeautifulSoup(driver.page_source, "html.parser")
     player_names = soup.find_all(class_='playerCardInfo')
     players = []
@@ -105,12 +135,12 @@ def scrape_team_squad(driver, url):
     return players
 
 
-def write_to_csv(players, team):
+def write_to_csv(players, team, season):
     result = []
-    filename = DIRECTORY + '/' + team + '_players.csv'
+    filename = f"PLAYER_DIRECTORY/{team}_{season}_players.csv"
     for player in players:
         result.append(list(player.__dict__.values()))
-    df = pd.DataFrame(result, columns=COLUMN_NAMES)
+    df = pd.DataFrame(result, columns=PLAYER_COLUMN_NAMES)
     df.to_csv('../Data/' + filename, index=False)
 
 
@@ -124,38 +154,42 @@ def team_to_url(team, urls):
     try:
         url = match[0]
     except IndexError:
-        print("Please provide a valid club name.")
+        print("Please provide a valid club name. Choose from the following:")
+        for valid_url in urls:
+            match = re.search(r'\d/(.*)/squad', valid_url)
+            if match:
+                print(' '.join(match.group(1).split("-")))
         return
     return url
 
 
 def main():
     arg_parser = ArgumentParser()
+    arg_parser.add_argument("--season", action="store", default="", nargs="+")
     arg_parser.add_argument("--team", action="store", default="", nargs="+")
     args = arg_parser.parse_args()
-    team = args.team
-    team = '-'.join(team)
-    if not os.path.exists(DIRECTORY):
-        os.mkdir(DIRECTORY)
+    team = '-'.join(args.team)
+    season = ' '.join(args.season)
+    if not os.path.exists('../Data/' + PLAYER_DIRECTORY):
+        os.mkdir('../Data/' + PLAYER_DIRECTORY)
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("headless")
     with webdriver.Chrome(chrome_options=chrome_options) as driver:
-        urls = scrape_url_team(driver)
-    urls = convert_urls_to_stats(urls)
-    with webdriver.Chrome(chrome_options=chrome_options) as driver:
+        urls, season = scrape_url_team(driver, season)
+        urls = convert_urls_to_stats(urls)
         if not team:
             for url in urls:
                 team = url_to_team(url)
-                print("Scraping {}'s players data...".format(team))
-                players = scrape_team_squad(driver, url)
-                write_to_csv(players, team)
+                print(f"Scraping {team}'s players data for season {season}...")
+                players = scrape_team_squad(driver, url, season)
+                write_to_csv(players, team, season)
             return
         else:
-            print("Scraping {}'s players data...".format(team))
+            print(f"Scraping {team}'s players data for season {season}...")
             url = team_to_url(team, urls)
             if url:
-                players = scrape_team_squad(driver, url)
-                write_to_csv(players, team)
+                players = scrape_team_squad(driver, url, season)
+                write_to_csv(players, team, season)
             return
 
 
