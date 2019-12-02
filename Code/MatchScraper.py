@@ -225,6 +225,22 @@ def set_filters(driver, competition, season, team):
         time.sleep(PAUSE_TIME)
 
 
+def get_team_id(conn, cur, team, season):
+    cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
+                (team, season))
+    result = cur.fetchall()
+    if not result:
+        cur.execute('''INSERT INTO teams_general 
+        (club, season, stadium, matches_played, wins, losses, goals, goals_conceded, clean_sheets) 
+        VALUES (%s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL)''',
+                    (team, season))
+        conn.commit()
+        cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
+                    (team, season))
+        result = cur.fetchall()
+    return result[0][0]
+
+
 def scrape_match_results(driver, competition, season, team):
     """Scrape all match results for specified, competition, season and team"""
 
@@ -259,6 +275,8 @@ def scrape_match_results(driver, competition, season, team):
         last_height = new_height
     soup = BeautifulSoup(driver.page_source, "html.parser")
     matches_by_date = soup.find_all(class_="fixtures__matches-list")
+    conn = mysql.connector.connect(user=DB_USER, password=DB_PWD, host='localhost', database=DB_NAME)
+    cur = conn.cursor()
     for match_by_date in matches_by_date:
         match_date = match_by_date["data-competition-matches-list"]
         matches = match_by_date.find_all(class_="matchFixtureContainer")
@@ -273,6 +291,28 @@ def scrape_match_results(driver, competition, season, team):
                             BeautifulSoup(match["data-venue"], "html.parser").get_text(),
                             scores[SCORE_HOME],
                             scores[SCORE_AWAY]])
+
+            home_id = get_team_id(conn, cur, match['data-home'], season)
+            away_id = get_team_id(conn, cur, match['data-away'], season)
+            cur.execute(
+                '''INSERT INTO match_results 
+                (web_id, date, season, competition, home_team,
+                home_team_id,away_team,away_team_id,stadium,home_score, away_score)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                [match_id,
+                 match_date,
+                 season,
+                 competition,
+                 match["data-home"],
+                 home_id,
+                 match["data-away"],
+                 away_id,
+                 BeautifulSoup(match["data-venue"], "html.parser").get_text(),
+                 scores[SCORE_HOME],
+                 scores[SCORE_AWAY]])
+    conn.commit()
+    cur.close()
+    conn.close()
 
     df = pd.DataFrame(results, columns=RESULTS_COLUMNS)
     df.to_csv('../Data/' + f"match_results_{competition}_{season}_{team}.csv", index=False)
@@ -291,4 +331,3 @@ class MatchScraper:
             if type == "stats" or type == "all":
                 filename = scrape_all_match_stats(driver, competition, season, team, filename)
                 print(f"Successfully scraped stats to {filename}")
-

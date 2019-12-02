@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from bs4 import BeautifulSoup
 from argparse import ArgumentParser
+import mysql.connector
 import os
 import re
 import time
@@ -24,3 +25,6 @@ STATS_COLUMNS = ["Match ID", "Referee", "Attendance", "Kick Off", "HT Score", "H
 PLAYER_COLUMN_NAMES = ["Club", "Name", "Number", "Position", "Nationality", "Appearances", "Clean Sheets", "Goals",
                        "Assists"]
 PLAYER_DIRECTORY = "Squads_Players"
+DB_USER = 'root'
+DB_PWD = 'password'
+DB_NAME = 'premier_league'
