@@ -67,7 +67,7 @@ CREATE TABLE `players` (
   `position` varchar(255),
   `nationality` varchar(255),
   `appearances` int,
-  `clean_sheets` intn,
+  `clean_sheets` int,
   `goals` int,
   `assists` int
 );
@@ -142,6 +142,8 @@ CREATE TABLE `teams_discipline` (
 ALTER TABLE `match_results` ADD FOREIGN KEY (`home_team_id`) REFERENCES `teams_general` (`id`);
 
 ALTER TABLE `match_results` ADD FOREIGN KEY (`away_team_id`) REFERENCES `teams_general` (`id`);
+
+CREATE INDEX web_id_index ON match_results(web_id)
 
 ALTER TABLE `match_general_stats` ADD FOREIGN KEY (`match_id`) REFERENCES `match_results` (`web_id`);
 
