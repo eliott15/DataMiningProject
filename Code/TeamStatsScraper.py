@@ -79,16 +79,16 @@ def scrape_all_teams_stat(driver, urls, season):
 def stats_to_csv(dictionary, season):
     values = list(dictionary.values())[0]
     number_of_columns = len(values)
-    column_names = ["Club"] + [list(dictionary.values())[0][i][0] for i in range(number_of_columns)]
+    column_names = ["Club"] +["Season"] + [list(dictionary.values())[0][i][0] for i in range(number_of_columns)]
     result = []
-    for index, club_name in enumerate(list(dictionary.keys())):
-        res = [club_name] + [list(dictionary.values())[index][i][1] for i in range(number_of_columns)]
-        result.append(res)
-    df = pd.DataFrame(result, columns=column_names)
     if season:
         season = season.replace('/', '-')
     else:
         season = "All Seasons"
+    for index, club_name in enumerate(list(dictionary.keys())):
+        res = [club_name] + [season] + [list(dictionary.values())[index][i][1] for i in range(number_of_columns)]
+        result.append(res)
+    df = pd.DataFrame(result, columns=column_names)
     df.to_csv('../Data/' + f"Team_stats_{season}.csv", index=False)
 
 
