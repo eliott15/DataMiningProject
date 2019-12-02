@@ -42,7 +42,7 @@ def main():
         parser.add_argument("--team", action="store", default="", nargs="+")
         sub_args = parser.parse_args(subargs)
         team = '-'.join(sub_args.team)
-        PlayersScraper(team, season)
+        PlayersScraper(team)
 
 
 if __name__ == '__main__':
