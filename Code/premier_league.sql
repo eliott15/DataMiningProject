@@ -36,7 +36,8 @@ CREATE TABLE `match_advanced_stats` (
   `away_possession` double,
   `home_shots_on_target` int,
   `away_shots_on_target` int,
-  `home_shots_away_shots` int,
+  `home_shots` int,
+  `away_shots` int,
   `home_touches` int,
   `away_touches` int,
   `home_passes` int,
@@ -158,3 +159,22 @@ ALTER TABLE `teams_play` ADD FOREIGN KEY (`id`) REFERENCES `teams_general` (`id`
 ALTER TABLE `teams_defence` ADD FOREIGN KEY (`id`) REFERENCES `teams_general` (`id`);
 
 ALTER TABLE `teams_discipline` ADD FOREIGN KEY (`id`) REFERENCES `teams_general` (`id`);
+
+ALTER TABLE match_results ADD CONSTRAINT uc1 UNIQUE (web_id);
+
+ALTER TABLE match_general_stats ADD CONSTRAINT uc2 UNIQUE (match_id);
+
+ALTER TABLE match_advanced_stats ADD CONSTRAINT uc3 UNIQUE (match_id);
+
+ALTER TABLE players ADD CONSTRAINT uc4 UNIQUE (season, club_id, name);
+
+ALTER TABLE teams_general ADD CONSTRAINT uc5 UNIQUE (club, season);
+
+ALTER TABLE `teams_attack` ADD CONSTRAINT uc6 UNIQUE (`id`);
+
+ALTER TABLE `teams_play` ADD CONSTRAINT uc7 UNIQUE (`id`);
+
+ALTER TABLE `teams_defence` ADD CONSTRAINT uc8 UNIQUE (`id`);
+
+ALTER TABLE `teams_discipline` ADD CONSTRAINT uc9 UNIQUE (`id`);
+
