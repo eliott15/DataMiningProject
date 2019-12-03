@@ -94,7 +94,7 @@ CREATE TABLE `teams_attack` (
   `goals_per_match` int,
   `shots` int,
   `shots_on_target` int,
-  `shooting_accuracy` double,
+  `shooting_accuracy` varchar(255),
   `penalties_scored` int,
   `big_chances_created` int,
   `hit_woodwork` int
@@ -105,8 +105,8 @@ CREATE TABLE `teams_play` (
   `club` varchar(255),
   `season` varchar(255),
   `passes` int,
-  `passes_per_match` double,
-  `pass_accuracy` double,
+  `passes_per_match` varchar(255),
+  `pass_accuracy` varchar(255),
   `crosses` int,
   `cross_accuracy` double
 );
@@ -117,10 +117,10 @@ CREATE TABLE `teams_defence` (
   `season` varchar(255),
   `clean_sheets` int,
   `goals_conceded` int,
-  `goals_conceded_per_match` double,
+  `goals_conceded_per_match` varchar(255),
   `saves` int,
   `tackles` int,
-  `tackle_success` double,
+  `tackle_success` varchar(255),
   `blocked_shots` int,
   `interceptions` int,
   `clearances` int,
