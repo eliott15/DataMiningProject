@@ -33,7 +33,7 @@ def parse_assists(events):
     return assists
 
 
-def scrape_match_stats(driver, match_id):
+def scrape_match_stats(driver, match_id, cur):
     """Scrape the stats for a specific match"""
     print(f"Scraping match stats for match_id: {match_id}")
     driver.get("https://www.premierleague.com/match/" + match_id)
@@ -88,6 +88,13 @@ def scrape_match_stats(driver, match_id):
     except TimeoutException:
         pass
 
+    cur.execute('''INSERT INTO match_general_stats (match_id, referee, attendance, kick_off, HT_Score, 
+                home_goals, Home_RC_events, away_goals, away_RC_events, home_assists, away_assists, king_of_the_match)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards,
+                 away_goals,
+                 away_red_cards, home_assists, away_assists, king_of_the_match])
+
     stats_list = []
     stats_columns_list = []
 
@@ -130,6 +137,14 @@ def scrape_match_stats(driver, match_id):
             stats_columns_list.append("Away " + stat_columns[1].get_text())
             stats_list.append(stat_columns[0].get_text())
             stats_list.append(stat_columns[2].get_text())
+
+        cur.execute('''INSERT INTO match_advanced_stats (match_id, home_possession, away_possession, 
+            home_shots_on_target, away_shots_on_target, home_shots, away_shots, home_touches, away_touches, home_passes, 
+            away_passes, home_tackles, away_tackles, home_clearances, away_clearances, home_corners, away_corners, 
+            home_offsides, away_offsides, home_yellow_cards, away_yellow_cards, home_red_cards, away_red_cards, 
+            home_fouls_conceded, away_fouls_conceded)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                    [match_id] + stats_list)
     return stats_columns_list, [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards,
                                 away_goals,
                                 away_red_cards, home_assists, away_assists, king_of_the_match] + stats_list
@@ -147,22 +162,26 @@ def scrape_all_match_stats(driver, competition, season, team, filename):
         set_filters(driver, competition, season, team)
 
         competition, season, team = get_current_filters(driver)
-        filename = f"match_results_{competition}_{season}_{team}.csv"
+        filename = f"../Data/match_results_{competition}_{season}_{team}.csv"
     if not os.path.exists(filename):
         print(f"Error: {filename} does not exist.\n"
               "Please choose 'results' or 'all' to scrape results for specified filters before scraping stats.")
         sys.exit(1)
+    conn = mysql.connector.connect(user=DB_USER, password=DB_PWD, host='localhost', database=DB_NAME)
+    cur = conn.cursor()
     with open(filename, 'r') as results_file:
         match_results = csv.DictReader(results_file)
         for match_result in match_results:
-            columns_to_add, match_stats = scrape_match_stats(driver, match_result['Match ID'])
+            columns_to_add, match_stats = scrape_match_stats(driver, match_result['Match ID'], cur)
             stats.append(match_stats)
-
+    conn.commit()
+    cur.close()
+    conn.close()
     stats_columns_whole = STATS_COLUMNS + columns_to_add
     df = pd.DataFrame(stats, columns=stats_columns_whole)
     filename = filename.replace("results", "stats")
-    df.to_csv('../Data/' + filename, index=False)
-    return '../Data/' + filename
+    df.to_csv(filename, index=False)
+    return filename
 
 
 def get_current_filters(driver):
