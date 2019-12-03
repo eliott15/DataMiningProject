@@ -28,3 +28,4 @@ PLAYER_DIRECTORY = "Squads_Players"
 DB_USER = 'root'
 DB_PWD = 'password'
 DB_NAME = 'premier_league'
+COMMON, GENERAL, ATTACK, PLAY, DEFENCE, DISCIPLINE = 2, 9, 17, 23, 36, 40

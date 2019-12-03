@@ -76,10 +76,20 @@ def scrape_all_teams_stat(driver, urls, season):
     return dictionary
 
 
+def get_team_id(cur, team, season):
+    cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
+                (team, season))
+    result = cur.fetchall()
+    if result:
+        return result[0][0]
+
+
 def stats_to_csv(dictionary, season):
+    conn = mysql.connector.connect(user=DB_USER, password=DB_PWD, host='localhost', database=DB_NAME)
+    cur = conn.cursor()
     values = list(dictionary.values())[0]
     number_of_columns = len(values)
-    column_names = ["Club"] +["Season"] + [list(dictionary.values())[0][i][0] for i in range(number_of_columns)]
+    column_names = ["Club"] + ["Season"] + [list(dictionary.values())[0][i][0] for i in range(number_of_columns)]
     result = []
     if season:
         season = season.replace('/', '-')
@@ -88,6 +98,47 @@ def stats_to_csv(dictionary, season):
     for index, club_name in enumerate(list(dictionary.keys())):
         res = [club_name] + [season] + [list(dictionary.values())[index][i][1] for i in range(number_of_columns)]
         result.append(res)
+        general = res[:COMMON] + res[COMMON:GENERAL]
+        attack = res[:COMMON] + res[GENERAL:ATTACK]
+        play = res[:COMMON] + res[ATTACK:PLAY]
+        defence = res[:COMMON] + res[PLAY:DEFENCE]
+        discipline = res[:COMMON] + res[DEFENCE:DISCIPLINE]
+        id = get_team_id(cur, club_name, season)
+        if not id:
+            cur.execute(
+                '''INSERT INTO teams_general
+                (club, season, stadium, matches_played, wins, losses, goals, goals_conceded, clean_sheets)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''', general)
+
+
+        else:
+            cur.execute(
+                '''UPDATE teams_general SET club = %s, season = %s, stadium = %s, matches_played = %s, wins = %s, 
+                losses = %s, goals = %s, goals_conceded = %s, clean_sheets = %s where id = %s ''',
+                general + [id])
+
+        id = get_team_id(cur, club_name, season)
+        cur.execute(
+            '''INSERT INTO teams_attack (id, club, season, goals, goals_per_match, shots, shots_on_target, 
+            shooting_accuracy, penalties_scored, big_chances_created, hit_woodwork) VALUES (%s, %s,%s, %s, %s, %s, %s, 
+            %s, %s, %s, %s)''', [id] + attack)
+        cur.execute(
+            '''INSERT INTO teams_play
+            (id, club, season, passes, passes_per_match, pass_accuracy, crosses, cross_accuracy)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)''', [id] + play[1:])
+        cur.execute(
+            '''INSERT INTO teams_defence (id, club, season, clean_sheets, goals_conceded, goals_conceded_per_match, 
+            saves, tackles, tackle_success, blocked_shots, interceptions, clearances, headed_clearance, 
+            duels_won, errors_leading_to_goal, own_goals) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+             %s)''', [id] + defence)
+        cur.execute(
+            '''INSERT INTO teams_discipline
+            (id, club, season, yellow_cards, red_cards, fouls, offsides)
+            VALUES (%s,%s,%s,%s,%s,%s,%s)''', [id] + discipline)
+    conn.commit()
+    cur.close()
+    conn.close()
+
     df = pd.DataFrame(result, columns=column_names)
     df.to_csv('../Data/' + f"Team_stats_{season}.csv", index=False)
 
