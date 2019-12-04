@@ -73,6 +73,7 @@ def scrape_all_teams_stat(driver, urls, season):
         print("Scrapping data on " + club_name + "...")
         stats = scrape_team_stat(driver, url, season)
         dictionary[club_name] = stats
+        break
     return dictionary
 
 
@@ -109,7 +110,25 @@ def stats_to_csv(dictionary, season):
                 '''INSERT INTO teams_general
                 (club, season, stadium, matches_played, wins, losses, goals, goals_conceded, clean_sheets)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''', general)
+            id = get_team_id(cur, club_name, season)
 
+            cur.execute(
+                '''INSERT INTO teams_attack (id, club, season, goals, goals_per_match, shots, shots_on_target, 
+                shooting_accuracy, penalties_scored, big_chances_created, hit_woodwork) VALUES (%s, %s,%s, %s, %s, %s, %s, 
+                %s, %s, %s, %s)''', [id] + attack)
+            cur.execute(
+                '''INSERT INTO teams_play
+                (id, club, season, passes, passes_per_match, pass_accuracy, crosses, cross_accuracy)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)''', [id] + play[:2] + play[3:])
+            cur.execute(
+                '''INSERT INTO teams_defence (id, club, season, clean_sheets, goals_conceded, goals_conceded_per_match, 
+                saves, tackles, tackle_success, blocked_shots, interceptions, clearances, headed_clearance, 
+                duels_won, errors_leading_to_goal, own_goals) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                 %s)''', [id] + defence)
+            cur.execute(
+                '''INSERT INTO teams_discipline
+                (id, club, season, yellow_cards, red_cards, fouls, offsides)
+                VALUES (%s,%s,%s,%s,%s,%s,%s)''', [id] + discipline)
 
         else:
             cur.execute(
@@ -117,24 +136,23 @@ def stats_to_csv(dictionary, season):
                 losses = %s, goals = %s, goals_conceded = %s, clean_sheets = %s where id = %s ''',
                 general + [id])
 
-        id = get_team_id(cur, club_name, season)
-        cur.execute(
-            '''INSERT INTO teams_attack (id, club, season, goals, goals_per_match, shots, shots_on_target, 
-            shooting_accuracy, penalties_scored, big_chances_created, hit_woodwork) VALUES (%s, %s,%s, %s, %s, %s, %s, 
-            %s, %s, %s, %s)''', [id] + attack)
-        cur.execute(
-            '''INSERT INTO teams_play
-            (id, club, season, passes, passes_per_match, pass_accuracy, crosses, cross_accuracy)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)''', [id] + play[1:])
-        cur.execute(
-            '''INSERT INTO teams_defence (id, club, season, clean_sheets, goals_conceded, goals_conceded_per_match, 
-            saves, tackles, tackle_success, blocked_shots, interceptions, clearances, headed_clearance, 
-            duels_won, errors_leading_to_goal, own_goals) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-             %s)''', [id] + defence)
-        cur.execute(
-            '''INSERT INTO teams_discipline
-            (id, club, season, yellow_cards, red_cards, fouls, offsides)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)''', [id] + discipline)
+            cur.execute(
+                '''UPDATE teams_attack SET club = %s, season= %s, goals = %s, goals_per_match= %s, shots= %s, 
+                shots_on_target= %s, shooting_accuracy= %s, penalties_scored= %s, big_chances_created= %s, 
+                hit_woodwork= %s where id = %s ''', attack + [id])
+            cur.execute(
+                '''UPDATE teams_play SET club = %s, season = %s, passes = %s, passes_per_match = %s, pass_accuracy = 
+                %s, crosses = %s, cross_accuracy = %s where id = %s''', play[:2]+play[3:] + [id])
+            cur.execute(
+                '''UPDATE teams_defence SET club = %s, season = %s, clean_sheets = %s, goals_conceded = %s, 
+                goals_conceded_per_match = %s, saves = %s, tackles = %s, tackle_success = %s, blocked_shots = %s, 
+                interceptions = %s, clearances = %s, headed_clearance = %s, duels_won = %s, errors_leading_to_goal = 
+                %s, own_goals = %s where id = %s''', defence + [id])
+            cur.execute(
+                '''UPDATE teams_discipline
+                SET club = %s, season = %s, yellow_cards = %s, red_cards = %s, fouls = %s, offsides = %s where id = %s
+                ''', discipline + [id])
+
     conn.commit()
     cur.close()
     conn.close()
