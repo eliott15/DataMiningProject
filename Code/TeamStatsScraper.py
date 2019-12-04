@@ -73,7 +73,6 @@ def scrape_all_teams_stat(driver, urls, season):
         print("Scrapping data on " + club_name + "...")
         stats = scrape_team_stat(driver, url, season)
         dictionary[club_name] = stats
-        break
     return dictionary
 
 
