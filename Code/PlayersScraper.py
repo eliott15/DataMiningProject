@@ -2,8 +2,8 @@ from Code.Variables import *
 
 
 class Player:
-    def __init__(self, name="", number="", position="", clean_sheets="", nationality="", appearances="", goals="",
-                 assists="", team=""):
+    def __init__(self, name="", number=0, position="", clean_sheets=0, nationality="", appearances=0, goals=0,
+                 assists=0, team=""):
         self.team = team
         self.name = name
         self.number = number
@@ -58,7 +58,7 @@ def scrape_team_squad(driver, url):
     for i in range(len(player_names)):
         info = player_names[i].get_text().split()
         if len(info) > 3:
-            number, name, position = info[0], ' '.join(info[1:-1]), info[-1]
+            number, name, position = info[0].replace('-', '0'), ' '.join(info[1:-1]), info[-1]
         else:
             number, name, position = info[0], info[1], info[2]
         p = Player(number=number, name=name, position=position, team=team)
@@ -94,11 +94,43 @@ def scrape_team_squad(driver, url):
     return players
 
 
-def write_to_csv(players, team):
+def get_team_id(conn, cur, team, season):
+    cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
+                (team, season))
+    result = cur.fetchall()
+    if not result:
+        cur.execute('''INSERT INTO teams_general 
+        (club, season, stadium, matches_played, wins, losses, goals, goals_conceded, clean_sheets) 
+        VALUES (%s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL)''',
+                    (team, season))
+        conn.commit()
+        cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
+                    (team, season))
+        result = cur.fetchall()
+    return result[0][0]
+
+
+def write_to_csv(players, team, season="2019-20"):
     result = []
     filename = PLAYER_DIRECTORY + '/' + team + '_players.csv'
+    conn = mysql.connector.connect(user=DB_USER, password=DB_PWD, host='localhost', database=DB_NAME)
+    cur = conn.cursor()
     for player in players:
-        result.append(list(player.__dict__.values()))
+        values = list(player.__dict__.values())
+        club_id = get_team_id(conn, cur, team, season)
+        row = [season] + [values[0]] + [club_id] + values[1:]
+        print(row)
+        result.append(values)
+        cur.execute(
+            '''INSERT INTO players (season, club, club_id, name, number, position, nationality, appearances, 
+            clean_sheets, goals, assists) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE 
+            season=VALUES(season), club=VALUES(club), club_id=VALUES(club_id), name=VALUES(name), number=VALUES(
+            number), position=VALUES(position), nationality=VALUES(nationality), appearances=VALUES(appearances), 
+            clean_sheets=VALUES(clean_sheets), goals=VALUES(goals), assists=VALUES(assists) ''', row)
+
+    conn.commit()
+    cur.close()
+    conn.close()
     df = pd.DataFrame(result, columns=PLAYER_COLUMN_NAMES)
     df.to_csv('../Data/' + filename, index=False)
 
