@@ -88,7 +88,7 @@ def scrape_match_stats(driver, match_id, cur):
     except TimeoutException:
         pass
 
-    cur.execute('''INSERT INTO match_general_stats (match_id, referee, attendance, kick_off, HT_Score, 
+    cur.execute('''INSERT IGNORE INTO match_general_stats (match_id, referee, attendance, kick_off, HT_Score, 
                 home_goals, Home_RC_events, away_goals, away_RC_events, home_assists, away_assists, king_of_the_match)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                 [match_id, referee, attendance, kick_off, half_time_score, home_goals, home_red_cards,
@@ -138,7 +138,7 @@ def scrape_match_stats(driver, match_id, cur):
             stats_list.append(stat_columns[0].get_text())
             stats_list.append(stat_columns[2].get_text())
 
-        cur.execute('''INSERT INTO match_advanced_stats (match_id, home_possession, away_possession, 
+        cur.execute('''INSERT IGNORE INTO match_advanced_stats (match_id, home_possession, away_possession, 
             home_shots_on_target, away_shots_on_target, home_shots, away_shots, home_touches, away_touches, home_passes, 
             away_passes, home_tackles, away_tackles, home_clearances, away_clearances, home_corners, away_corners, 
             home_offsides, away_offsides, home_yellow_cards, away_yellow_cards, home_red_cards, away_red_cards, 
@@ -250,14 +250,20 @@ def get_team_id(conn, cur, team, season):
     result = cur.fetchall()
     if not result:
         cur.execute('''INSERT INTO teams_general 
-        (club, season, stadium, matches_played, wins, losses, goals, goals_conceded, clean_sheets) 
-        VALUES (%s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL)''',
+        (club, season) 
+        VALUES (%s, %s)''',
                     (team, season))
         conn.commit()
         cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
                     (team, season))
         result = cur.fetchall()
-    return result[0][0]
+        id = result[0][0]
+        for stat_type in ['attack', 'play', 'defence', 'discipline']:
+            cur.execute(f'''INSERT INTO teams_{stat_type} (id, club, season) VALUES (%s, %s, %s)''', (id, team, season))
+        conn.commit()
+    else:
+        id = result[0][0]
+    return id
 
 
 def scrape_match_results(driver, competition, season, team):
@@ -303,18 +309,26 @@ def scrape_match_results(driver, competition, season, team):
             score = match.find(class_="score")
             scores = list(score.children)
             match_id = match["data-comp-match-item"]
+            home_team = match['data-home']
+            if home_team in SHORT_TO_LONG:
+                home_team = SHORT_TO_LONG[home_team]
+            home_team = home_team.strip(" ").replace(" ", "-")
+            away_team = match['data-away']
+            if away_team in SHORT_TO_LONG:
+                away_team = SHORT_TO_LONG[away_team]
+            away_team = away_team.strip(" ").replace(" ", "-")
             results.append([match_id,
                             match_date,
-                            match["data-home"],
-                            match["data-away"],
+                            home_team,
+                            away_team,
                             BeautifulSoup(match["data-venue"], "html.parser").get_text(),
                             scores[SCORE_HOME],
                             scores[SCORE_AWAY]])
 
-            home_id = get_team_id(conn, cur, match['data-home'], season)
-            away_id = get_team_id(conn, cur, match['data-away'], season)
+            home_id = get_team_id(conn, cur, home_team, season)
+            away_id = get_team_id(conn, cur, away_team, season)
             cur.execute(
-                '''INSERT INTO match_results 
+                '''INSERT IGNORE INTO match_results 
                 (web_id, date, season, competition, home_team,
                 home_team_id,away_team,away_team_id,stadium,home_score, away_score)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
@@ -322,9 +336,9 @@ def scrape_match_results(driver, competition, season, team):
                  match_date,
                  season,
                  competition,
-                 match["data-home"],
+                 home_team,
                  home_id,
-                 match["data-away"],
+                 away_team,
                  away_id,
                  BeautifulSoup(match["data-venue"], "html.parser").get_text(),
                  scores[SCORE_HOME],

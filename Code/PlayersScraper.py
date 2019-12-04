@@ -100,14 +100,20 @@ def get_team_id(conn, cur, team, season):
     result = cur.fetchall()
     if not result:
         cur.execute('''INSERT INTO teams_general 
-        (club, season, stadium, matches_played, wins, losses, goals, goals_conceded, clean_sheets) 
-        VALUES (%s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL)''',
+        (club, season) 
+        VALUES (%s, %s)''',
                     (team, season))
         conn.commit()
         cur.execute('''SELECT id FROM teams_general WHERE club = %s AND season = %s''',
                     (team, season))
         result = cur.fetchall()
-    return result[0][0]
+        id = result[0][0]
+        for stat_type in ['attack', 'play', 'defence', 'discipline']:
+            cur.execute(f'''INSERT INTO teams_{stat_type} (id, club, season) VALUES (%s, %s, %s)''', (id, team, season))
+        conn.commit()
+    else:
+        id = result[0][0]
+    return id
 
 
 def write_to_csv(players, team, season="2019-20"):
@@ -119,7 +125,6 @@ def write_to_csv(players, team, season="2019-20"):
         values = list(player.__dict__.values())
         club_id = get_team_id(conn, cur, team, season)
         row = [season] + [values[0]] + [club_id] + values[1:]
-        print(row)
         result.append(values)
         cur.execute(
             '''INSERT INTO players (season, club, club_id, name, number, position, nationality, appearances, 

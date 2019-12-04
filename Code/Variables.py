@@ -29,3 +29,11 @@ DB_USER = 'root'
 DB_PWD = 'password'
 DB_NAME = 'premier_league'
 COMMON, GENERAL, ATTACK, PLAY, DEFENCE, DISCIPLINE = 2, 9, 17, 23, 36, 40
+SHORT_TO_LONG = {'Birmingham': 'Birmingham City', 'Blackburn':'Blackburn Rovers', 'Bolton':'Bolton Wanderers',
+'Bradford':'Bradford City', 'Brighton':'Brighton and Hove Albion', 'Cardiff': 'Cardiff City', 'Charlton': 'Charlton Athletic',
+'Coventry': 'Coventry City', 'Derby': 'Derby County', 'Huddersfield': 'Huddersfield Town', 'Hull': 'Hull City',
+'Ipswich': 'Ipswich Town', 'Leeds': 'Leeds United', 'Leicester': 'Leicester City', 'Man City': 'Manchester City',
+'Man Utd': 'Manchester United', 'Newcastle': 'Newcastle United', 'Norwich': 'Norwich City', "Nott'm Forest": 'Nottingham Forest',
+'Oldham' : 'Oldham Athletic', 'QPR': 'Queens Park Rangers', 'Sheffield': 'Sheffield United', 'Sheffield Utd': 'Sheffield United', 'Sheffield Wed': 'Sheffield Wednesday',
+'Stoke': 'Stoke City', 'Swansea': 'Swansea City', 'Swindon': 'Swindon Town', 'Spurs': 'Tottenham Hotspur', 'West Brom':'West Bromwich Albion',
+'West Ham': 'West Ham United', 'Wigan': 'Wigan Athletic', 'Wolves': 'Wolverhampton Wanderers'}

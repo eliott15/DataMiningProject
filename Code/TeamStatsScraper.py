@@ -42,11 +42,14 @@ def scrape_team_stat(driver, url, season):
     print("from " + url)
     driver.get(url)
     webdriver_wait = WebDriverWait(driver, TIMEOUT)
-    condition = EC.presence_of_element_located((By.CLASS_NAME, "stadium"))
+    try:
+        condition = EC.presence_of_element_located((By.CLASS_NAME, "stadium"))
+        webdriver_wait.until(condition)
+    except TimeoutException:
+        pass
+
+    condition = EC.presence_of_element_located((By.CSS_SELECTOR, "ul[class='dropdownList'] > li"))
     webdriver_wait.until(condition)
-    condition = EC.presence_of_element_located((By.CLASS_NAME, "dropdownList"))
-    webdriver_wait.until(condition)
-    time.sleep(0.5)
 
     set_filters(driver, season)
 

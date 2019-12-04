@@ -108,7 +108,7 @@ CREATE TABLE `teams_play` (
   `passes_per_match` varchar(255),
   `pass_accuracy` varchar(255),
   `crosses` int,
-  `cross_accuracy` double
+  `cross_accuracy` varchar(255)
 );
 
 CREATE TABLE `teams_defence` (
