@@ -3,7 +3,7 @@ from Code.TableScraper import TableScraper
 from Code.MatchScraper import MatchScraper
 from Code.TeamStatsScraper import TeamStatsScraper
 from Code.PlayersScraper import PlayersScraper
-
+from Code.WeatherScraper import WeatherScraper
 
 def main():
     if not os.path.exists('../Data'):
@@ -43,6 +43,8 @@ def main():
         sub_args = parser.parse_args(subargs)
         team = '-'.join(sub_args.team)
         PlayersScraper(team)
+    elif args.scraper == 'Weather':
+        WeatherScraper()
 
 
 if __name__ == '__main__':

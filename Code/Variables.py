@@ -12,6 +12,9 @@ import time
 import pandas as pd
 import csv
 import sys
+import requests
+import json
+from datetime import datetime,timedelta
 
 URL = 'https://www.premierleague.com'
 TIMEOUT = 10
@@ -37,3 +40,4 @@ SHORT_TO_LONG = {'Birmingham': 'Birmingham City', 'Blackburn':'Blackburn Rovers'
 'Oldham' : 'Oldham Athletic', 'QPR': 'Queens Park Rangers', 'Sheffield': 'Sheffield United', 'Sheffield Utd': 'Sheffield United', 'Sheffield Wed': 'Sheffield Wednesday',
 'Stoke': 'Stoke City', 'Swansea': 'Swansea City', 'Swindon': 'Swindon Town', 'Spurs': 'Tottenham Hotspur', 'West Brom':'West Bromwich Albion',
 'West Ham': 'West Ham United', 'Wigan': 'Wigan Athletic', 'Wolves': 'Wolverhampton Wanderers'}
+API_KEY="NEDgpUtU"
