@@ -52,3 +52,11 @@ Enter your password and it should create all the relevant tables automatically.
 1. Please refer to premier_league.pdf to see the DB's diagram.
 
 Note: we did not enter the tables from TableScraper to the DB since it would not have much sense, because each row in a particular scraped table has no meaning by itself but as a ranking with the other rows.
+
+#### External API
+
+We added a Weather scraper using meteostat API to scrape weather conditions for each match. We insert it in a new table in the database called match_weather. The sql file was updated accordingly to create the table.
+
+Run it using following command:
+
+`python main.py Weather`
