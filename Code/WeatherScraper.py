@@ -36,10 +36,11 @@ class WeatherScraper:
             city = stadium.split(", ")[-1].lower()
             # TODO: parse date
             start_date = parse_date(date)
-            weather = [web_id] + get_weather(city, kick_off, start_date)
+            weather = [web_id, date] + get_weather(city, kick_off, start_date)
             # TODO: create table match_weather
-            cur.execute("""INSERT INTO match_weather (match_id, city, kick_off, temperature, humidity (%), precipitation (mm), wind_speed (km/h)) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s)""")
+            cur.execute("""INSERT INTO match_weather 
+            (match_id, date, city, kick_off, temperature, humidity (%), precipitation (mm), wind_speed (km/h)) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", weather)
         conn.commit()
         cur.close()
         conn.close()
