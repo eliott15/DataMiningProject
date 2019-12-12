@@ -15,6 +15,7 @@ import sys
 import requests
 import json
 from datetime import datetime,timedelta
+import dateparser
 
 URL = 'https://www.premierleague.com'
 TIMEOUT = 10

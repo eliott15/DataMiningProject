@@ -28,18 +28,20 @@ class WeatherScraper:
         conn = mysql.connector.connect(user=DB_USER, password=DB_PWD, host='localhost', database=DB_NAME)
         cur = conn.cursor()
         cur.execute("""SELECT web_id, stadium, kick_off, date 
-        FROM match_result JOIN match_general_stats 
-        ON match_result.web_id = match_general_stats.match_id
+        FROM match_results JOIN match_general_stats 
+        ON match_results.web_id = match_general_stats.match_id
         """)
         result = cur.fetchall()
         for (web_id, stadium, kick_off, date) in result:
             city = stadium.split(", ")[-1].lower()
-            # TODO: parse date
-            start_date = parse_date(date)
-            weather = [web_id, date] + get_weather(city, kick_off, start_date)
-            # TODO: create table match_weather
-            cur.execute("""INSERT INTO match_weather 
-            (match_id, date, city, kick_off, temperature, humidity (%), precipitation (mm), wind_speed (km/h)) 
+            start_date = dateparser.parse(date).strftime("%Y-%m-%d")
+            print(date)
+            try:
+                weather = [web_id, date] + get_weather(city, kick_off, start_date)
+            except IndexError:
+                continue
+            cur.execute("""INSERT IGNORE INTO match_weather 
+            (match_id, date, city, kick_off, temperature, humidity, precipitation_mm, wind_speed_km_h) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", weather)
         conn.commit()
         cur.close()

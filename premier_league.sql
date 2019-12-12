@@ -140,6 +140,18 @@ CREATE TABLE `teams_discipline` (
   `offsides` int
 );
 
+CREATE TABLE `match_weather` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `match_id` int,
+    `date` varchar(255),
+    `city` varchar(255),
+    `kick_off` varchar(255),
+    `temperature` double,
+    `humidity` double,
+    `precipitation_mm` double,
+    `wind_speed_km_h` double
+);
+
 ALTER TABLE `match_results` ADD FOREIGN KEY (`home_team_id`) REFERENCES `teams_general` (`id`);
 
 ALTER TABLE `match_results` ADD FOREIGN KEY (`away_team_id`) REFERENCES `teams_general` (`id`);
@@ -147,6 +159,8 @@ ALTER TABLE `match_results` ADD FOREIGN KEY (`away_team_id`) REFERENCES `teams_g
 CREATE INDEX web_id_index ON match_results(web_id);
 
 ALTER TABLE `match_general_stats` ADD FOREIGN KEY (`match_id`) REFERENCES `match_results` (`web_id`);
+
+ALTER TABLE `match_weather` ADD FOREIGN KEY (`match_id`) REFERENCES `match_results` (`web_id`);
 
 ALTER TABLE `match_advanced_stats` ADD FOREIGN KEY (`match_id`) REFERENCES `match_results` (`web_id`);
 
@@ -177,4 +191,6 @@ ALTER TABLE `teams_play` ADD CONSTRAINT uc7 UNIQUE (`id`);
 ALTER TABLE `teams_defence` ADD CONSTRAINT uc8 UNIQUE (`id`);
 
 ALTER TABLE `teams_discipline` ADD CONSTRAINT uc9 UNIQUE (`id`);
+
+ALTER TABLE match_weather ADD CONSTRAINT uc10 UNIQUE (match_id);
 
