@@ -9,7 +9,7 @@ def main():
     if not os.path.exists('../Data'):
         os.makedirs('../Data')
     scraper_list = []
-    for file in os.listdir('Code/s'):
+    for file in os.listdir('Code/'):
         match = re.search(r'(.*)Scraper.py', file)
         if match:
             scraper_list.append(match.group(1))
