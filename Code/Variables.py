@@ -30,7 +30,7 @@ PLAYER_COLUMN_NAMES = ["Club", "Name", "Number", "Position", "Nationality", "App
                        "Assists"]
 PLAYER_DIRECTORY = "Squads_Players"
 DB_USER = 'root'
-DB_PWD = 'password'
+DB_PWD = 'newpassword'
 DB_NAME = 'premier_league'
 COMMON, GENERAL, ATTACK, PLAY, DEFENCE, DISCIPLINE = 2, 9, 17, 23, 36, 40
 SHORT_TO_LONG = {'Birmingham': 'Birmingham City', 'Blackburn':'Blackburn Rovers', 'Bolton':'Bolton Wanderers',
