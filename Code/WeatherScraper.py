@@ -35,7 +35,7 @@ class WeatherScraper:
         for (web_id, stadium, kick_off, date) in result:
             city = stadium.split(", ")[-1].lower()
             start_date = dateparser.parse(date).strftime("%Y-%m-%d")
-            print(date)
+            print(f"Scraping weather data for {date} at {kick_off} in {city.capitalize()}")
             try:
                 weather = [web_id, date] + get_weather(city, kick_off, start_date)
             except IndexError:
